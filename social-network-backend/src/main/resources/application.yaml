@@ -1,0 +1,25 @@
+spring:
+  flyway:
+    enabled: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/social_network
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    properties.hibernate:
+      default_schema: public
+      dialict: org.hibernate.dialect.PostgreSQL91Dialect
+    generate-ddl: true
+
+security:
+  basic:
+    enable: false
+
+  jwt:
+    uri: /auth/**
+    header: Authorization
+    prefix: Bearer
+    expiration: 86400
+    secret: JwtSecretKey
