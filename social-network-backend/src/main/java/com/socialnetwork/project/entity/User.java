@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -15,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -37,4 +38,12 @@ public class User {
     private Set<Role> roles;
 
     private boolean enabled;
+
+
+
+    @ManyToMany(mappedBy = "users", targetEntity = Chat.class)
+    private List<Chat> chats;
+
+    @OneToMany(mappedBy = "user", targetEntity = Message.class)
+    private List<Message> messages;
 }

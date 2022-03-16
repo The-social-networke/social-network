@@ -1,6 +1,7 @@
 package com.socialnetwork.project.controller;
 
 import com.socialnetwork.project.entity.User;
+import com.socialnetwork.project.entity.enums.Role;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -28,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> details(@PathVariable("id") Integer id) {
+    public ResponseEntity<User> details(@PathVariable("id") Long id) {
         return new ResponseEntity<>(
                 userService.readById(id),
                 HttpStatus.OK
@@ -52,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<User> delete(@PathVariable("id") Long id) {
         return new ResponseEntity<>(
                 userService.delete(userService.readById(id)),
                 HttpStatus.OK

@@ -1,6 +1,6 @@
 CREATE TABLE users
 (
-    id       SERIAL,
+    id       BIGSERIAL,
     name     varchar(32) NOT NULL,
     surname  varchar(32) NOT NULL,
     email    varchar(45) UNIQUE NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE users
 
 CREATE TABLE users_roles
 (
-    user_id SERIAL,
+    user_id BIGSERIAL,
     role varchar(255)
 );
 
