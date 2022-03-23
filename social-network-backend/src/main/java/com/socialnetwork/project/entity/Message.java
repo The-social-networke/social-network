@@ -20,12 +20,12 @@ public class Message {
 
     @NotNull
     @ManyToOne(targetEntity = Chat.class)
-    @Column(name = "chat_id", nullable = false)
+    @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
     @NotNull
     @ManyToOne(targetEntity = User.class)
-    @Column(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String text;
