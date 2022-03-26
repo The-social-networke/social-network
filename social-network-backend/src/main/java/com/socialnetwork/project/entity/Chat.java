@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,14 +19,21 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "owner_id")
+    private User user;
+
+    @NotNull
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
             @JoinTable(
                     name = "users_chats",
                     joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
                     inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
             )
-    List<User> users;
+    List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "chat", targetEntity = Message.class)
-    List<Message> messages;
+    List<Message> messages = new ArrayList<>();
 }

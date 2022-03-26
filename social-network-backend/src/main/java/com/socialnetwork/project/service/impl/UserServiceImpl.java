@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User object) {
-        return userRepository.save(object);
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
     @Transactional(readOnly = true)
@@ -30,19 +30,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User object) {
-        return userRepository.save(object);
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public User delete(User object) {
-        userRepository.delete(object);
-        return object;
+    public User delete(User user) {
+        userRepository.delete(user);
+        return user;
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

@@ -1,16 +1,20 @@
 package com.socialnetwork.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.socialnetwork.project.entity.enums.Role;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "users")
 public class User {
 
@@ -37,13 +41,20 @@ public class User {
     @Column(name = "role")
     private Set<Role> roles;
 
-    private boolean enabled;
+    private boolean enabled = true;
 
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = Chat.class)
+    private List<Chat> owner_chats = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users", targetEntity = Chat.class)
-    private List<Chat> chats;
+    private List<Chat> chats = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", targetEntity = Message.class)
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
 }
+
+
