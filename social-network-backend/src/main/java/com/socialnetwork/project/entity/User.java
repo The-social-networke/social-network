@@ -26,6 +26,8 @@ public class User {
 
     private String surname;
 
+    //TODO: add username
+
     private String email;
 
     private String phone;

@@ -23,8 +23,8 @@ import static org.springframework.util.StringUtils.hasText;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JwtFilter extends GenericFilterBean {
 
-    private JwtProvider jwtProvider;
-    private CustomUserDetailsService customUserDetailsService;
+    private final JwtProvider jwtProvider;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Value("${security.jwt.header}")
     private String Authorization;

@@ -29,6 +29,10 @@ public class CustomUserDetails implements UserDetails {
         return customUserDetails;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -46,21 +50,22 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return enabled;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return enabled;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return enabled;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
+
 }
