@@ -25,7 +25,7 @@ import java.util.Scanner;
 @Slf4j
 @RestController
 @RequestMapping("chats")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class ChatController {
 
     private final UserService userService;

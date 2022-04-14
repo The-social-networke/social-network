@@ -5,7 +5,9 @@ import com.socialnetwork.project.entity.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,25 +36,21 @@ public class User {
 
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
     @CollectionTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private Set<Role> roles;
 
     private boolean enabled = true;
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", targetEntity = Chat.class)
-    private List<Chat> owner_chats = new ArrayList<>();
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "users", targetEntity = Chat.class)
-    private List<Chat> chats = new ArrayList<>();
+    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = ChatUser.class)
+    private Set<ChatUser> chats = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", targetEntity = Message.class)

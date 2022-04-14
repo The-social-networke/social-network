@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class AuthorizationController {
 
     private final UserService userService;
@@ -34,8 +34,8 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthenticationRequestDTO authentication) {
-        CustomUserDetails user = (CustomUserDetails) authenticationManager.
-                authenticate(new UsernamePasswordAuthenticationToken(authentication.getEmail(),
+        CustomUserDetails user = (CustomUserDetails) authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(authentication.getEmail(),
                         authentication.getPassword()))
                 .getPrincipal();
 
