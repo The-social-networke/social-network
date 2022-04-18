@@ -5,28 +5,27 @@ import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.repository.ChatRepository;
 import com.socialnetwork.project.repository.UserRepository;
 import com.socialnetwork.project.service.ChatService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
-
-    public ChatServiceImpl(ChatRepository chatRepository) {
-        this.chatRepository = chatRepository;
-    }
 
     @Override
     public Chat create(Chat chat) {
         return chatRepository.save(chat);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public Chat readById(Long id) {
         return chatRepository.getById(id);
     }
@@ -37,13 +36,14 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Chat delete(Chat chat) {
+    public Chat delete(Long id) {
+        Chat chat = chatRepository.getById(id);
         chatRepository.delete(chat);
         return chat;
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<Chat> getAll() {
         return chatRepository.findAll();
     }

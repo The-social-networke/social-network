@@ -21,7 +21,6 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Table(name = "messages")
 @Builder(toBuilder = true)
 public class Message implements Serializable {
@@ -48,6 +47,7 @@ public class Message implements Serializable {
     @Column(name = "forward_id")
     private Long forwardId = null;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "like_messages",
@@ -56,6 +56,7 @@ public class Message implements Serializable {
     )
     private Set<User> messageReads = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "like_messages",
@@ -64,7 +65,7 @@ public class Message implements Serializable {
     )
     private Set<User> messageLikes = new HashSet<>();
 
-    @Column(name = "is_updated", nullable = false, columnDefinition = "is_updated default 'false'")
+    @Column(name = "is_updated", nullable = false)
     private boolean isUpdated = false;
 
     @CreationTimestamp

@@ -18,7 +18,7 @@ import java.util.Set;
 @Slf4j
 @RestController
 @RequestMapping("user")
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
     private final UserService userService;

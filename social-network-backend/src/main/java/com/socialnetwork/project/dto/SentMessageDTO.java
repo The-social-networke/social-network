@@ -8,6 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SentMessageDTO {
-    private Long chatId;
     private String text;
 }

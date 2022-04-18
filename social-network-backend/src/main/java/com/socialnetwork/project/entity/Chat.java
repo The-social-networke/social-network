@@ -1,5 +1,6 @@
 package com.socialnetwork.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -24,18 +25,17 @@ public class Chat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "owner_id")
-    private User user;
-
-    @NotNull
+    @JsonIgnore
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = ChatUser.class)
     private Set<ChatUser> users = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = Message.class)
     Set<Message> messages = new HashSet<>();
 

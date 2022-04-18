@@ -1,6 +1,7 @@
 package com.socialnetwork.project.security;
 
 import com.socialnetwork.project.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@Getter
 public class CustomUserDetails implements UserDetails {
 
     private Long id;
     private String email;
     private String password;
     private boolean enabled;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public static CustomUserDetails fromUserToCustomUserDetails(User user) {
@@ -27,10 +30,6 @@ public class CustomUserDetails implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
         return customUserDetails;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     @Override
@@ -67,5 +66,4 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

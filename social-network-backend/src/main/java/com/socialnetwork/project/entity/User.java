@@ -22,18 +22,25 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "surname", nullable = false)
     private String surname;
 
-    //TODO: add username
-
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
@@ -45,16 +52,25 @@ public class User {
     @Column(name = "role", nullable = false)
     private Set<Role> roles;
 
+    @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = ChatUser.class)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = ChatUser.class)
     private Set<ChatUser> chats = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", targetEntity = Message.class)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Message.class)
     private List<Message> messages = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "messageReads", fetch = FetchType.LAZY, targetEntity = Message.class)
+    private List<Message> messageReads = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "messageLikes", fetch = FetchType.LAZY, targetEntity = Message.class)
+    private List<Message> messageLikes = new ArrayList<>();
 }
 
 

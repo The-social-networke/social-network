@@ -11,9 +11,9 @@ import java.util.List;
 @Mapper
 public interface ChatMapper {
 
-    Chat toChat(CreateChatDTO chatDTO);
+    /*Chat toChat(CreateChatDTO chatDTO);
 
     ChatDTO toChatDTO(Chat chat);
     Chat toChat(ChatDTO chatDTO);
-    List<ChatListDTO> toChatListDTO(List<Chat> chats);
+    List<ChatListDTO> toChatListDTO(List<Chat> chats);*/
 }

@@ -8,6 +8,7 @@ import com.socialnetwork.project.security.CustomUserDetails;
 import com.socialnetwork.project.security.jwt.JwtProvider;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,21 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthorizationController {
 
     private final UserService userService;
     private final UserMapper userMapper;
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
-
-    @PostMapping("/registration")
-    public ResponseEntity<String> registration(@RequestBody UserCreateDTO userDTO) {
-        User user = userMapper.ToUser(userDTO);
-        userService.create(user);
-        return ResponseEntity.ok("Registration is successful");
-    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthenticationRequestDTO authentication) {
@@ -41,5 +36,12 @@ public class AuthorizationController {
 
         String token = jwtProvider.generateToken(user);
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity<String> registration(@RequestBody UserCreateDTO userDTO) {
+        User user = userMapper.ToUser(userDTO);
+        userService.create(user);
+        return ResponseEntity.ok("Registration is successful");
     }
 }
