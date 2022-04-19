@@ -31,19 +31,19 @@ public class User {
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
-
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
     @CollectionTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -53,7 +53,7 @@ public class User {
     private Set<Role> roles;
 
     @Column(name = "enabled", nullable = false)
-    private boolean enabled = true;
+    private boolean enabled;
 
 
     @JsonIgnore

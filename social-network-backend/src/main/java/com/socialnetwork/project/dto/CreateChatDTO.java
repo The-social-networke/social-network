@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 public class CreateChatDTO {
     private String name;
-    private List<User> users;
+    private List<Long> usersId;
 }
 

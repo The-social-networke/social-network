@@ -5,9 +5,8 @@ import com.socialnetwork.project.dto.ChatDTO;
 import com.socialnetwork.project.dto.ChatListDTO;
 import com.socialnetwork.project.dto.CreateChatDTO;
 import com.socialnetwork.project.dto.SentMessageDTO;
-import com.socialnetwork.project.entity.Chat;
-import com.socialnetwork.project.entity.Message;
-import com.socialnetwork.project.entity.User;
+import com.socialnetwork.project.entity.*;
+import com.socialnetwork.project.entity.enums.ChatRole;
 import com.socialnetwork.project.mapper.ChatMapper;
 import com.socialnetwork.project.mapper.MessageMapper;
 import com.socialnetwork.project.security.CustomUserDetails;
@@ -42,20 +41,29 @@ public class ChatController {
     }
 
     @PostMapping
-    public ResponseEntity<ChatDTO> createChat(/*@RequestBody CreateChatDTO chatDTO*/) {
+    public ResponseEntity<Chat> createChat(@CurrentUser CustomUserDetails userDetails/*@RequestBody CreateChatDTO chatDTO*/) {
         //Chat chat = chatMapper.toChat(chatDTO);
-        /*User user1 = userService.readById(1L);
-        User user2 = userService.readById(2L);
+        User user1 = userService.findByEmail(userDetails.getEmail());
+        User user2 = userService.readById(6L);
         Chat chat = new Chat();
-        chat.setName("Наш чат");
-        chat.setUser(user1);
-        Set<User> list = new HashSet<>();
-        list.add(user1);
-        list.add(user2);
-        chat.setUsers(list);
+        chat.setName("Наш чат6");
         chat = chatService.create(chat);
-        return ResponseEntity.ok(chatMapper.toChatDTO(chat));*/
-        return null;
+        Set<ChatUser> list = new HashSet<>();
+        list.add(ChatUser.builder()
+                .id(ChatUserPK.builder().chatId(chat.getId()).userId(user1.getId()).build())
+                .chat(chat)
+                .user(user1)
+                .role(ChatRole.MEMBER)
+                .build());
+        list.add(ChatUser.builder()
+                .id(ChatUserPK.builder().chatId(chat.getId()).userId(user2.getId()).build())
+                .chat(chat)
+                .user(user2)
+                .role(ChatRole.MEMBER)
+                .build());
+        chat.setUsers(list);
+        chat = chatService.update(chat);
+        return ResponseEntity.ok(chat);
     }
 
     @GetMapping("{id}")

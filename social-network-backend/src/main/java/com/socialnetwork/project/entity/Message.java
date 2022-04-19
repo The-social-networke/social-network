@@ -50,7 +50,7 @@ public class Message implements Serializable {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
-            name = "like_messages",
+            name = "read_messages",
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
