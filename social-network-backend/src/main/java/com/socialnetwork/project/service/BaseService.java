@@ -6,6 +6,6 @@ public interface BaseService<T, I> {
     T create(T object);
     T readById(I id);
     T update(T object);
-    T delete(T object);
+    T delete(I id);
     List<T> getAll();
 }

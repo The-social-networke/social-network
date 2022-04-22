@@ -1,6 +1,9 @@
 package com.socialnetwork.project.controller;
 
+import com.socialnetwork.project.annotation.CurrentUser;
 import com.socialnetwork.project.entity.User;
+import com.socialnetwork.project.entity.enums.Role;
+import com.socialnetwork.project.security.CustomUserDetails;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,51 +13,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping("users")
+@RequestMapping("user")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<User>> categories() {
+    @GetMapping("profile")
+    public ResponseEntity<User> profile(@CurrentUser CustomUserDetails userDetails) {
+        User user = userService.readById(userDetails.getId());
+        System.out.println("ggwp");
         return new ResponseEntity<>(
-                userService.getAll(),
-                HttpStatus.OK
-        );
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<User> details(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(
-                userService.readById(id),
-                HttpStatus.OK
-        );
-    }
-
-    @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
-        return new ResponseEntity<>(
-                userService.create(user),
-                HttpStatus.OK
-        );
-    }
-
-    @PutMapping
-    public ResponseEntity<User> update(@RequestBody User user) {
-        return new ResponseEntity<>(
-                userService.update(user),
-                HttpStatus.OK
-        );
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(
-                userService.delete(userService.readById(id)),
+                user,
                 HttpStatus.OK
         );
     }
