@@ -57,8 +57,8 @@ public class User {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = ChatUser.class)
-    private Set<ChatUser> chats = new HashSet<>();
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, targetEntity = Chat.class)
+    private Set<Chat> chats = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Message.class)

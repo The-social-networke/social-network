@@ -31,8 +31,13 @@ public class Chat {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, targetEntity = ChatUser.class)
-    private Set<ChatUser> users = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
+    @JoinTable(
+            name = "chat_users",
+            joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, targetEntity = Message.class)
     Set<Message> messages = new HashSet<>();

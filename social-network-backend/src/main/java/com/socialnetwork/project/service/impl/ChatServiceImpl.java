@@ -1,22 +1,14 @@
 package com.socialnetwork.project.service.impl;
 
 import com.socialnetwork.project.entity.Chat;
-import com.socialnetwork.project.entity.ChatUser;
-import com.socialnetwork.project.entity.User;
-import com.socialnetwork.project.entity.enums.ChatRole;
 import com.socialnetwork.project.repository.ChatRepository;
-import com.socialnetwork.project.repository.UserRepository;
 import com.socialnetwork.project.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.type.descriptor.java.SerializableTypeDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.SerializationUtils;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional

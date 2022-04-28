@@ -3,7 +3,6 @@ package com.socialnetwork.project.controller;
 import com.socialnetwork.project.annotation.CurrentUser;
 import com.socialnetwork.project.dto.*;
 import com.socialnetwork.project.entity.*;
-import com.socialnetwork.project.entity.enums.ChatRole;
 import com.socialnetwork.project.mapper.ChatMapper;
 import com.socialnetwork.project.mapper.MessageMapper;
 import com.socialnetwork.project.security.CustomUserDetails;
@@ -39,32 +38,11 @@ public class ChatController {
     @PostMapping
     public ResponseEntity<ChatDTO> createChat(@CurrentUser CustomUserDetails userDetails,
                                            @RequestBody CreateChatDTO chatDTO) {
-        /*User owner = userService.findByEmail(userDetails.getEmail());
+        User owner = userService.findByEmail(userDetails.getEmail());
         Chat chat = chatMapper.toChat(chatDTO);
-        chat.getUsers().add(ChatUser.builder().user(owner).role(ChatRole.MEMBER).build());
-        chat = chatService.create(chat);*/
-        User user1 = userService.findByEmail(userDetails.getEmail());
-        User user2 = userService.readById(7L);
-        Chat chat = new Chat();
-        chat.setName("Наш чат6");
+        chat.getUsers().add(owner);
         chat = chatService.create(chat);
-        Set<ChatUser> list = new HashSet<>();
-        list.add(ChatUser.builder()
-                        .id(ChatUserPK.builder().chatId(chat.getId()).userId(user1.getId()).build())
-                .chat(chat)
-                .user(user1)
-                .role(ChatRole.MEMBER)
-                .build());
-        list.add(ChatUser.builder()
-                .id(ChatUserPK.builder().chatId(chat.getId()).userId(user2.getId()).build())
-                .chat(chat)
-                .user(user2)
-                .role(ChatRole.MEMBER)
-                .build());
-        chat.setUsers(list);
-        chat = chatService.update(chat);
         return ResponseEntity.ok(chatMapper.toChatDTO(chat));
-        //return null;
     }
 
     @GetMapping("{id}")
