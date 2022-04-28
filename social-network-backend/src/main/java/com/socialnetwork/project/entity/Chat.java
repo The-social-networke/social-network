@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,12 +31,10 @@ public class Chat {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = ChatUser.class)
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, targetEntity = ChatUser.class)
     private Set<ChatUser> users = new HashSet<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = Message.class)
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, targetEntity = Message.class)
     Set<Message> messages = new HashSet<>();
 
     @CreationTimestamp

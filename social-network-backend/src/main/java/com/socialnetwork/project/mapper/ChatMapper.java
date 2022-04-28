@@ -4,30 +4,42 @@ import com.socialnetwork.project.dto.ChatDTO;
 import com.socialnetwork.project.dto.ChatListDTO;
 import com.socialnetwork.project.dto.CreateChatDTO;
 import com.socialnetwork.project.entity.Chat;
+import com.socialnetwork.project.entity.ChatUser;
 import com.socialnetwork.project.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper
 public interface ChatMapper {
 
-    /*default Set<User> authorsIdToAuthors(List<Long> list) {
+    @Named("usersIdToChatUsers")
+    default Set<ChatUser> usersIdToChatUsers(List<Long> list) {
         return list.stream().
-                map(aLong -> {
-                    Author author = new Author();
-                    author.setId(aLong);
-                    return author;
+                map(id ->
+                {
+                    User user = new User();
+                    user.setId(id);
+                    return ChatUser.builder().user(user).build();
                 })
                 .collect(Collectors.toSet());
     }
 
-    @Mapping(source = "usersId", target = "users", qualifiedByName = "usersIdToUsers")
+    @Mapping(source = "usersId", target = "users", qualifiedByName = "usersIdToChatUsers")
     Chat toChat(CreateChatDTO chatDTO);
 
-    /*ChatDTO toChatDTO(Chat chat);
-    Chat toChat(ChatDTO chatDTO);
-    List<ChatListDTO> toChatListDTO(List<Chat> chats);*/
+    @Named("chatUsersToUsers")
+    default Set<User> chatUsersToUsers(Set<ChatUser> users) {
+        return users.stream().
+                map(ChatUser::getUser)
+                .collect(Collectors.toSet());
+    }
+    @Mapping(source = "users", target = "users", qualifiedByName = "chatUsersToUsers")
+    ChatDTO toChatDTO(Chat chat);
+
+    List<ChatListDTO> toChatListDTO(List<Chat> chats);
 }

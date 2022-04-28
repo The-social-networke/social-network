@@ -1,10 +1,7 @@
 package com.socialnetwork.project.controller;
 
 import com.socialnetwork.project.annotation.CurrentUser;
-import com.socialnetwork.project.dto.ChatDTO;
-import com.socialnetwork.project.dto.ChatListDTO;
-import com.socialnetwork.project.dto.CreateChatDTO;
-import com.socialnetwork.project.dto.SentMessageDTO;
+import com.socialnetwork.project.dto.*;
 import com.socialnetwork.project.entity.*;
 import com.socialnetwork.project.entity.enums.ChatRole;
 import com.socialnetwork.project.mapper.ChatMapper;
@@ -36,21 +33,24 @@ public class ChatController {
 
     @GetMapping
     public ResponseEntity<List<ChatListDTO>> chats() {
-        //return ResponseEntity.ok(chatMapper.toChatListDTO(chatService.getAll()));
-        return null;
+        return ResponseEntity.ok(chatMapper.toChatListDTO(chatService.getAll()));
     }
 
     @PostMapping
-    public ResponseEntity<Chat> createChat(@CurrentUser CustomUserDetails userDetails/*@RequestBody CreateChatDTO chatDTO*/) {
-        //Chat chat = chatMapper.toChat(chatDTO);
+    public ResponseEntity<ChatDTO> createChat(@CurrentUser CustomUserDetails userDetails,
+                                           @RequestBody CreateChatDTO chatDTO) {
+        /*User owner = userService.findByEmail(userDetails.getEmail());
+        Chat chat = chatMapper.toChat(chatDTO);
+        chat.getUsers().add(ChatUser.builder().user(owner).role(ChatRole.MEMBER).build());
+        chat = chatService.create(chat);*/
         User user1 = userService.findByEmail(userDetails.getEmail());
-        User user2 = userService.readById(6L);
+        User user2 = userService.readById(7L);
         Chat chat = new Chat();
         chat.setName("Наш чат6");
         chat = chatService.create(chat);
         Set<ChatUser> list = new HashSet<>();
         list.add(ChatUser.builder()
-                .id(ChatUserPK.builder().chatId(chat.getId()).userId(user1.getId()).build())
+                        .id(ChatUserPK.builder().chatId(chat.getId()).userId(user1.getId()).build())
                 .chat(chat)
                 .user(user1)
                 .role(ChatRole.MEMBER)
@@ -63,25 +63,25 @@ public class ChatController {
                 .build());
         chat.setUsers(list);
         chat = chatService.update(chat);
-        return ResponseEntity.ok(chat);
+        return ResponseEntity.ok(chatMapper.toChatDTO(chat));
+        //return null;
     }
 
     @GetMapping("{id}")
     public ResponseEntity<ChatDTO> chat(@PathVariable("id") Long id) {
-        //return ResponseEntity.ok(chatMapper.toChatDTO(chatService.readById(id)));
-        return null;
+        return ResponseEntity.ok(chatMapper.toChatDTO(chatService.readById(id)));
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<Message> sentMessage(@CurrentUser CustomUserDetails userDetails,
-                                               @PathVariable("id") Long id,
-                                               @RequestBody SentMessageDTO messageDTO) {
+    public ResponseEntity<MessageDTO> sentMessage(@CurrentUser CustomUserDetails userDetails,
+                                                  @PathVariable("id") Long id,
+                                                  @RequestBody SentMessageDTO messageDTO) {
         User user = userService.findByEmail(userDetails.getEmail());
         Chat chat = chatService.readById(id);
         Message message = messageMapper.toMessage(messageDTO);
         message.setUser(user);
         message.setChat(chat);
         message = messageService.create(message);
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(messageMapper.toMessageDTO(message));
     }
 }

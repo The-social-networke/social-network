@@ -3,6 +3,8 @@ package com.socialnetwork.project.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.socialnetwork.project.entity.enums.ChatRole;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 
@@ -16,7 +18,7 @@ import javax.persistence.*;
 public class ChatUser {
 
     @EmbeddedId
-    private ChatUserPK id;
+    private ChatUserPK id = new ChatUserPK();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Chat.class)

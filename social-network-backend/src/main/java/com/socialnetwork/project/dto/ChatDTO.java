@@ -6,13 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 public class ChatDTO {
     private String id;
     private String name;
-    private User user;
-    private List<User> users;
-    private List<Message> messages;
+    private Set<UserDTO> users;
+    private Set<MessageDTO> messages;
 }
