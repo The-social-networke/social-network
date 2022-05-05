@@ -1,7 +1,7 @@
 package com.socialnetwork.project.security.jwt;
 
-import com.socialnetwork.project.security.CustomUserDetails;
-import com.socialnetwork.project.security.CustomUserDetailsService;
+import com.socialnetwork.project.security.UserSecurity;
+import com.socialnetwork.project.security.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class JwtFilter extends GenericFilterBean {
 
     private final JwtProvider jwtProvider;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserSecurityService userSecurityService;
 
     @Value("${security.jwt.header}")
     private String Authorization;
@@ -37,8 +37,8 @@ public class JwtFilter extends GenericFilterBean {
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {
             String email = jwtProvider.getLoginFromToken(token);
-            CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(email);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+            UserSecurity userSecurity = userSecurityService.loadUserByUsername(email);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userSecurity, null, userSecurity.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(servletRequest, servletResponse);

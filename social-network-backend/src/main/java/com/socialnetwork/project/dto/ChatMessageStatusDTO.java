@@ -1,6 +1,10 @@
 package com.socialnetwork.project.dto;
 
-import lombok.*;
+import com.socialnetwork.project.entity.enums.MessageStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -8,17 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ChatListDTO {
+public class ChatMessageStatusDTO {
 
     private Long chatId;
 
-    private Long anotherUserId;
-
     private Long userId;
-
-    private String name;
-
-    private String surname;
 
     private Long messageId;
 
@@ -26,5 +24,5 @@ public class ChatListDTO {
 
     private LocalDateTime sentAt;
 
-    private int amountNotReadMessages;
+    private MessageStatus messageStatus;
 }

@@ -4,7 +4,7 @@ import com.socialnetwork.project.dto.AuthenticationRequestDTO;
 import com.socialnetwork.project.dto.UserCreateDTO;
 import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.mapper.UserMapper;
-import com.socialnetwork.project.security.CustomUserDetails;
+import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.security.jwt.JwtProvider;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthenticationRequestDTO authentication) {
-        CustomUserDetails user = (CustomUserDetails) authenticationManager
+        UserSecurity user = (UserSecurity) authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authentication.getEmail(),
                         authentication.getPassword()))
                 .getPrincipal();
@@ -41,7 +41,7 @@ public class AuthorizationController {
     @PostMapping("/registration")
     public ResponseEntity<String> registration(@RequestBody UserCreateDTO userDTO) {
         User user = userMapper.ToUser(userDTO);
-        userService.create(user);
+        userService.createUser(user);
         return ResponseEntity.ok("Registration is successful");
     }
 }

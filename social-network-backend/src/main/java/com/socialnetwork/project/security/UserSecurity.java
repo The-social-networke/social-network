@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class UserSecurity implements UserDetails {
 
     private Long id;
     private String email;
@@ -19,17 +19,17 @@ public class CustomUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static CustomUserDetails fromUserToCustomUserDetails(User user) {
-        CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.id = user.getId();
-        customUserDetails.email = user.getEmail();
-        customUserDetails.password = user.getPassword();
-        customUserDetails.enabled = user.isEnabled();
-        customUserDetails.authorities = user.getRoles()
+    public static UserSecurity fromUserToCustomUserDetails(User user) {
+        UserSecurity userSecurity = new UserSecurity();
+        userSecurity.id = user.getId();
+        userSecurity.email = user.getEmail();
+        userSecurity.password = user.getPassword();
+        userSecurity.enabled = user.isEnabled();
+        userSecurity.authorities = user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
-        return customUserDetails;
+        return userSecurity;
     }
 
     @Override

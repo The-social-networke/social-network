@@ -1,6 +1,6 @@
 spring:
   flyway:
-    enabled: false
+    enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/social_network
@@ -13,7 +13,7 @@ spring:
       dialect: org.hibernate.dialect.PostgreSQL91Dialect
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database: postgresql
 
 security:
@@ -26,3 +26,7 @@ security:
     prefix: Bearer
     expiration: 86400
     secret: JwtSecretKey
+
+#app
+app:
+  system-user-id: 6

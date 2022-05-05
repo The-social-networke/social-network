@@ -16,14 +16,17 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "users")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
+
+    @Column(name = "avatar")
+    private String avatar;
 
     @Column(name = "name", nullable = false)
     private String name;

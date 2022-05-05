@@ -1,6 +1,6 @@
 package com.socialnetwork.project.security.jwt;
 
-import com.socialnetwork.project.security.CustomUserDetails;
+import com.socialnetwork.project.security.UserSecurity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +21,7 @@ public class JwtProvider {
     @Value("${security.jwt.expiration}")
     private String expiration;
 
-    public String generateToken(CustomUserDetails user) {
+    public String generateToken(UserSecurity user) {
         Date date = Date.from(LocalDate.now()
                 .plusDays(15)
                 .atStartOfDay(ZoneId.systemDefault()).toInstant());
