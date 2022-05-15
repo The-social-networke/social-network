@@ -35,12 +35,12 @@ public class Message implements Serializable {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Chat.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Chat.class)
     @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
@@ -75,7 +75,7 @@ public class Message implements Serializable {
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> readMessages;
+    private Set<User> readMessages = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
@@ -83,5 +83,5 @@ public class Message implements Serializable {
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> likedMessages;
+    private Set<User> likedMessages = new HashSet<>();
 }

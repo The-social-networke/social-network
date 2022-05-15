@@ -1,16 +1,17 @@
 package com.socialnetwork.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.socialnetwork.project.entity.enums.Sex;
 import lombok.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class UserUpdateDTO {
 
+    @JsonIgnore
     private Long id;
 
     private String name;
@@ -27,5 +28,5 @@ public class UserUpdateDTO {
 
     private String password;
 
-    private Sex newPassword;
+    private String newPassword;
 }

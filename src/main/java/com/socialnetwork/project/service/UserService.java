@@ -7,9 +7,9 @@ import com.socialnetwork.project.entity.User;
 
 public interface UserService {
 
-    User create(UserCreateDTO dto);
+    boolean create(UserCreateDTO dto);
     UserDTO getById(Long userId);
-    User update(UserUpdateDTO dto);
+    UserDTO update(UserUpdateDTO dto);
     boolean delete(Long userId);
 
     User findByEmail(String email);

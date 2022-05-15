@@ -1,10 +1,12 @@
 package com.socialnetwork.project.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class AuthenticationDTO {
 
     private String email;

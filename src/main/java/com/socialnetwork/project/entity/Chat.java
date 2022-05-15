@@ -36,10 +36,10 @@ public class Chat {
             joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = Message.class)
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
 
     @CreationTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)

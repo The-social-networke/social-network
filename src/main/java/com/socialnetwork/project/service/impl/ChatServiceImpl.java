@@ -6,6 +6,7 @@ import com.socialnetwork.project.entity.Message;
 import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.entity.enums.MessageStatus;
 import com.socialnetwork.project.exception.ChatException;
+import com.socialnetwork.project.mapper.ChatMapper;
 import com.socialnetwork.project.mapper.MessageMapper;
 import com.socialnetwork.project.repository.ChatRepository;
 import com.socialnetwork.project.repository.MessageRepository;
@@ -38,6 +39,7 @@ public class ChatServiceImpl implements ChatService {
     private String systemUserEmail;
 
     private final ChatRepository chatRepository;
+    private final ChatMapper chatMapper;
 
     private final MessageRepository messageRepository;
     private final MessageService messageService;
@@ -48,18 +50,18 @@ public class ChatServiceImpl implements ChatService {
     private final SimpMessagingTemplate template;
 
     @Override
-    public Chat getChatById(Long chatId, Long userId) {
+    public ChatDTO getChatById(Long chatId, Long userId) {
         log.info("Find chat with chatId = {} and userId = {}", chatId, userId);
 
         Chat chat = getChatOrElseThrow(chatId);
         checkIfUserMemberOfChat(chat, userId);
 
-        return chat;
+        return chatMapper.toChatDTO(chat);
     }
 
     @Override
     @Transactional
-    public Chat getChatByUserOrElseCreate(ChatCreateDTO dto) {
+    public ChatDTO getChatByUserOrElseCreate(ChatCreateDTO dto) {
         log.info("getChatRoomByUsersOrElseCreate by users with currentUserId = {}, and userId = {}", dto.getCurrentUserId(), dto.getUserId());
 
         Optional<Chat> chat = chatRepository.findChatByUsers(dto.getCurrentUserId(), dto.getUserId());
@@ -71,29 +73,33 @@ public class ChatServiceImpl implements ChatService {
                     .toBuilder()
                     .users(Set.of(user, anotherUser))
                     .build();
-            return chatRepository.save(entity);
+            return chatMapper.toChatDTO(
+                    chatRepository.save(entity)
+            );
         }
-        return chat.get();
+        return chatMapper.toChatDTO(chat.get());
     }
 
     @Override
     @Transactional
-    public Chat getSystemChatByUserIdOrElseCreate(Long userId) {
+    public ChatDTO getSystemChatByUserIdOrElseCreate(Long userId) {
         log.info("Find system chat room by users with userId = {}", userId);
 
         User systemUser = userRepository.findByEmail(systemUserEmail).orElse(new User());
         Optional<Chat> chat = chatRepository.findChatByUsers(userId, systemUser.getId());
         if(!chat.isPresent()) {
-            Chat newChat = new Chat()
+            Chat entity = new Chat()
                     .toBuilder()
                     .users(Set.of(
                             userRepository.findById(userId).orElseThrow(),
                             systemUser
                     ))
                     .build();
-            return chatRepository.save(newChat);
+            return chatMapper.toChatDTO(
+                    chatRepository.save(entity)
+            );
         }
-        return chat.get();
+        return chatMapper.toChatDTO(chat.get());
     }
 
     @Override
@@ -114,13 +120,14 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public Chat createChat(ChatCreateDTO dto) {
+    public ChatDTO createChat(ChatCreateDTO dto) {
         log.info("Create chat");
 
         if(chatRepository.existsChatByUsers(dto.getCurrentUserId(), dto.getUserId())) {
             throw new ChatException(ErrorCodeException.CHAT_WITH_THESE_USERS_ALREADY_EXISTS);
         }
-        Chat chat = new Chat()
+
+        Chat entity = new Chat()
                 .toBuilder()
                 .users(Set.of(
                         userRepository.findById(dto.getCurrentUserId()).orElseThrow(),
@@ -128,7 +135,9 @@ public class ChatServiceImpl implements ChatService {
                 ))
                 .build();
 
-        return chatRepository.save(chat);
+        return chatMapper.toChatDTO(
+                chatRepository.save(entity)
+        );
     }
 
     @Override

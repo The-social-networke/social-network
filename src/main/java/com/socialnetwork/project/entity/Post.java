@@ -30,7 +30,7 @@ public class Post {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -54,8 +54,8 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> likedPosts;
+    private Set<User> likedPosts = new HashSet<>();
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, targetEntity = Comment.class)
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
 }

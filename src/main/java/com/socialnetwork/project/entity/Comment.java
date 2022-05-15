@@ -31,12 +31,12 @@ public class Comment {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Post.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Post.class)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 

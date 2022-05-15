@@ -27,12 +27,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User create(UserCreateDTO dto) {
+    public boolean create(UserCreateDTO dto) {
         User user = userMapper.ToEntity(dto);
         user.setRoles(Set.of(Role.ROLE_USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
-        return userRepository.save(user);
+        userRepository.save(user);
+        return true;
     }
 
     @Override
@@ -43,14 +44,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(UserUpdateDTO dto) {
-        return null;
+    public UserDTO update(UserUpdateDTO dto) {
+        User entity = userMapper.ToEntity(dto);
+        User user = userRepository.findById(entity.getId()).orElseThrow();
+
+        if(dto.getNewPassword() != null) {
+            if(passwordEncoder.matches(user.getPassword(), entity.getPassword())){
+                entity.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+            }
+        }
+        return userMapper.toUserDTO(
+                userRepository.save(entity)
+        );
     }
 
     @Override
     public boolean delete(Long userId) {
+        User entity = userRepository.findById(userId).orElseThrow();
+        entity.setEnabled(false);
+        userRepository.save(entity);
         return true;
     }
+
 
     @Override
     @Transactional(readOnly = true)

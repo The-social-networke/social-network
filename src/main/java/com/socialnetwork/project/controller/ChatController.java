@@ -31,7 +31,7 @@ public class ChatController {
     private final MessageMapper messageMapper;
 
     @GetMapping("/{id}")
-    public Chat getChatById(
+    public ChatDTO getChatById(
             @PathVariable("id") Long chatId,
             @CurrentUser UserSecurity userSecurity
     ) {
@@ -46,7 +46,7 @@ public class ChatController {
     }
 
     @PostMapping("/get-chat")
-    public Chat getChatRoomByUsersOrElseCreate(
+    public ChatDTO getChatRoomByUsersOrElseCreate(
             @RequestBody ChatCreateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {
@@ -55,14 +55,14 @@ public class ChatController {
     }
 
     @PostMapping("/get-system-chat")
-    public Chat getSystemChatRoomByUserOrElseCreate(
+    public ChatDTO getSystemChatRoomByUserOrElseCreate(
             @CurrentUser UserSecurity userSecurity
     ) {
         return chatService.getSystemChatByUserIdOrElseCreate(userSecurity.getId());
     }
 
     @PostMapping
-    public Chat createChat(
+    public ChatDTO createChat(
             @CurrentUser UserSecurity userDetails,
             @RequestBody ChatCreateDTO dto
     ) {
