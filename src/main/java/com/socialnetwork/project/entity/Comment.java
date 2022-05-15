@@ -16,7 +16,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "post_comments")
 @Builder(toBuilder = true)
@@ -32,12 +31,12 @@ public class Comment {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Post.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Post.class)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 

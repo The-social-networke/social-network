@@ -15,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "posts")
 @Builder(toBuilder = true)
@@ -31,7 +30,7 @@ public class Post {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -55,8 +54,8 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> likedPosts = new HashSet<>();
+    private Set<User> likedPosts;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, targetEntity = Comment.class)
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 }

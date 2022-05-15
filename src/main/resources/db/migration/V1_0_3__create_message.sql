@@ -15,13 +15,13 @@ ALTER TABLE messages ADD CONSTRAINT messages_user_id FOREIGN KEY (user_id) REFER
 ALTER TABLE messages ADD CONSTRAINT messages_chat_id FOREIGN KEY (chat_id) REFERENCES chats;
 
 INSERT INTO messages VALUES
-(1, '2', '2', 'Привіт', null, null, null, false, '2022-05-09 17:16:30.594468'),
-(2, '3', '2', 'Привіт', null, null, null, false, '2022-05-09 17:17:00.594468'),
-(3, '2', '2', 'Шо робиш?', null, null, null, false, '2022-05-09 17:17:30.594468'),
-(4, '2', '2', 'Як справи?', null, null, null, false, '2022-05-09 17:18:00.594468'),
-(5, '3', '2', 'Пишу проект', null, 3, 'MESSAGE', false, '2022-05-09 17:18:30.594468'),
-(6, '3', '2', 'Все добре', null, 4, 'MESSAGE', false, '2022-05-09 17:18:30.594468'),
-(7, '3', '2', 'А ти як?', null, 3, 'MESSAGE', false, '2022-05-09 17:19:00.594468');
+(1, 2, 2, 'Привіт', null, null, null, false, '2022-05-09 17:16:30.594468'),
+(2, 3, 2, 'Привіт', null, null, null, false, '2022-05-09 17:17:00.594468'),
+(3, 2, 2, 'Шо робиш?', null, null, null, false, '2022-05-09 17:17:30.594468'),
+(4, 2, 2, 'Як справи?', null, null, null, false, '2022-05-09 17:18:00.594468'),
+(5, 3, 2, 'Пишу проект', null, 3, 'MESSAGE', false, '2022-05-09 17:18:30.594468'),
+(6, 3, 2, 'Все добре', null, 4, 'MESSAGE', false, '2022-05-09 17:18:30.594468'),
+(7, 3, 2, 'А ти як?', null, 3, 'MESSAGE', false, '2022-05-09 17:19:00.594468');
 
 CREATE TABLE read_messages (
     message_id INT8 NOT NULL,

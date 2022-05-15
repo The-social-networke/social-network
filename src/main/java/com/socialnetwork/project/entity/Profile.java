@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "profiles")
 @Builder(toBuilder = true)

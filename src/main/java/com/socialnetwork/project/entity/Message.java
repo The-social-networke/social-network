@@ -20,7 +20,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "messages")
 @Builder(toBuilder = true)
@@ -36,12 +35,12 @@ public class Message implements Serializable {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Chat.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Chat.class)
     @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
@@ -76,7 +75,7 @@ public class Message implements Serializable {
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> readMessages = new HashSet<>();
+    private Set<User> readMessages;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
@@ -84,5 +83,5 @@ public class Message implements Serializable {
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> likedMessages = new HashSet<>();
+    private Set<User> likedMessages;
 }

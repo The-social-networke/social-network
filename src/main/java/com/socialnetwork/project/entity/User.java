@@ -12,7 +12,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "users")
 @Builder(toBuilder = true)
@@ -67,54 +66,54 @@ public class User {
 
 
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Profile.class)
-    private Profile profile;
+    /*@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Profile.class)
+    private Profile profile;*/
 
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
+    /*@ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "subscriptions",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id")
     )
-    private Set<User> subscriptions = new HashSet<>();
+    private Set<User> subscriptions;
 
     @ManyToMany(mappedBy = "subscriptions", fetch = FetchType.LAZY, targetEntity = User.class)
-    private Set<User> readers = new HashSet<>();
+    private Set<User> readers;*/
 
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Post.class)
-    private Set<Post> posts = new HashSet<>();
+    private Set<Post> posts;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, targetEntity = Post.class)
-    private Set<Post> likedPosts = new HashSet<>();
+    private Set<Post> likedPosts;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Comment.class)
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "likedComments", fetch = FetchType.LAZY, targetEntity = Comment.class)
-    private Set<Comment> likedComments = new HashSet<>();
+    private Set<Comment> likedComments;*/
 
 
     @JsonIgnore
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, targetEntity = Chat.class)
-    private Set<Chat> chats = new HashSet<>();
+    private Set<Chat> chats;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Message.class)
-    private Set<Message> messages = new HashSet<>();
+    private Set<Message> messages;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "readMessages", fetch = FetchType.LAZY, targetEntity = Message.class)
-    private Set<Message> readMessages = new HashSet<>();
+    private Set<Message> readMessages;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "likedMessages", fetch = FetchType.LAZY, targetEntity = Message.class)
-    private Set<Message> likedMessages = new HashSet<>();
+    private Set<Message> likedMessages;
 }
 
 

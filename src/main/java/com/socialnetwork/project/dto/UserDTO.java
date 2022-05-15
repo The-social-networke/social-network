@@ -1,10 +1,19 @@
 package com.socialnetwork.project.dto;
 
 import com.socialnetwork.project.entity.enums.Sex;
+import lombok.*;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class UserDTO {
 
     private Long id;
+
+    private String avatar;
 
     private String name;
 
@@ -17,8 +26,4 @@ public class UserDTO {
     private String phone;
 
     private Sex sex;
-
-    private String password;
-
-    private String newPassword;
 }

@@ -1,11 +1,14 @@
 package com.socialnetwork.project.dto;
 
 import com.socialnetwork.project.entity.enums.Sex;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class UserCreateDTO {
 
     private String name;

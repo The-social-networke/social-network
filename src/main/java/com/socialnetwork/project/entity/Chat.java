@@ -15,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "chats")
 @Builder(toBuilder = true)
@@ -31,16 +30,16 @@ public class Chat {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "chat_users",
             joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Set<User> users = new HashSet<>();
+    private Set<User> users;
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = Message.class)
-    Set<Message> messages = new HashSet<>();
+    private Set<Message> messages;
 
     @CreationTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
