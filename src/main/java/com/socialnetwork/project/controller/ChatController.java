@@ -23,21 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChatController {
 
-    private final UserService userService;
-
     private final ChatService chatService;
-    private final ChatMapper chatMapper;
-
-    private final MessageService messageService;
-    private final MessageMapper messageMapper;
-
-    @GetMapping("/{id}")
-    public ChatDTO getChatById(
-            @PathVariable("id") Long chatId,
-            @CurrentUser UserSecurity userSecurity
-    ) {
-        return chatService.getChatById(chatId, userSecurity.getId());
-    }
 
     @GetMapping
     public List<ChatListDTO> getAllChats(
@@ -47,7 +33,7 @@ public class ChatController {
     }
 
     @PostMapping("/get-chat")
-    public ChatDTO getChatRoomByUsersOrElseCreate(
+    public ChatDTO getChatByUserOrElseCreate(
             @Valid @RequestBody ChatCreateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {

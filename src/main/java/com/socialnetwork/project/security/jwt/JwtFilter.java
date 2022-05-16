@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -34,12 +35,15 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String token = getTokenFromRequest((HttpServletRequest) servletRequest);
-        if (token != null && jwtProvider.validateToken(token)) {
-            String email = jwtProvider.getLoginFromToken(token);
-            UserSecurity userSecurity = userSecurityService.loadUserByUsername(email);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userSecurity, null, userSecurity.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        String uri = ((HttpServletRequest) servletRequest).getServletPath();
+        if(!uri.equals("/registration") && !uri.equals("/login")) {
+            String token = getTokenFromRequest((HttpServletRequest) servletRequest);
+            if (token != null && jwtProvider.validateToken(token)) {
+                String email = jwtProvider.getLoginFromToken(token);
+                UserSecurity userSecurity = userSecurityService.loadUserByUsername(email);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userSecurity, null, userSecurity.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

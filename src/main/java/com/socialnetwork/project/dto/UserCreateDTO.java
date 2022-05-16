@@ -34,7 +34,6 @@ public class UserCreateDTO {
     @Size(max = 64, message = "Phone must be up to 64")
     private String phone;
 
-    @NotBlank(message = "Sex cannot be empty")
     private Sex sex;
 
     @NotBlank(message = "Password cannot be empty")
