@@ -10,9 +10,8 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface UserMapper {
 
-    User ToEntity(AuthenticationDTO userDTO);
-    User ToEntity(UserCreateDTO userDTO);
-    User ToEntity(UserUpdateDTO userDTO);
+    User toEntity(UserCreateDTO userDTO);
+    User toEntity(UserUpdateDTO userDTO);
 
     UserDTO toUserDTO(User user);
 }

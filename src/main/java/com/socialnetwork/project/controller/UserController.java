@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("user")
@@ -28,7 +30,7 @@ public class UserController {
 
     @PutMapping("profile")
     public UserDTO updateProfile(
-            @RequestBody UserUpdateDTO dto,
+            @Valid @RequestBody UserUpdateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {
         dto.setId(userSecurity.getId());
@@ -44,8 +46,8 @@ public class UserController {
 
     @GetMapping("set-avatar")
     public String setAvatar(
-            @RequestParam() MultipartFile file,
-            @CurrentUser UserSecurity userDetails
+            @RequestParam("file") MultipartFile file,
+            @CurrentUser UserSecurity userSecurity
     ) {
         return null;
     }

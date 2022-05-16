@@ -2,12 +2,23 @@ package com.socialnetwork.project.exception;
 
 import com.socialnetwork.project.dto.ErrorDTO;
 import com.socialnetwork.project.util.ErrorCodeException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.impl.crypto.JwtSignatureValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.HandlerMethod;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.Map;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
@@ -18,6 +29,24 @@ public class ApplicationExceptionHandler {
         return ErrorDTO.builder()
                 .message(ex.getMessage())
                 .errorCode(ErrorCodeException.MISSING_ARGUMENT)
+                .build();
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        return ErrorDTO.builder()
+                .message(ex.getMessage())
+                .errorCode(ErrorCodeException.NOT_VALID_PARAM)
+                .build();
+    }
+
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ErrorDTO handleJwtException(BadCredentialsException ex) {
+        return ErrorDTO.builder()
+                .message(ex.getMessage())
+                .errorCode(ErrorCodeException.UNAUTHORIZED)
                 .build();
     }
 

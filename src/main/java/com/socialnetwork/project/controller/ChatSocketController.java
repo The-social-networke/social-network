@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChatSocketController {
@@ -16,46 +18,46 @@ public class ChatSocketController {
 
     @PostMapping("/chats/sendMessage")
     public MessageDTO sendMessage(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody MessageCreateDTO dto
+            @Valid @RequestBody MessageCreateDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setUserId(userDetails.getId());
+        dto.setUserId(userSecurity.getId());
         return chatService.sendMessage(dto);
     }
 
     @PutMapping("/chats/updateMessage")
     public MessageDTO sendMessage(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody MessageUpdateDTO dto
+            @Valid @RequestBody MessageUpdateDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setUserId(userDetails.getId());
+        dto.setUserId(userSecurity.getId());
         return chatService.updateMessage(dto);
     }
 
     @DeleteMapping("/chats/deleteMessage")
     public MessageDTO sendMessage(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody MessageDeleteDTO dto
+            @Valid @RequestBody MessageDeleteDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setUserId(userDetails.getId());
+        dto.setUserId(userSecurity.getId());
         return chatService.deleteMessage(dto);
     }
 
     @PutMapping("/chats/readMessage")
     public MessageDTO readMessage(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody MessageReadDTO dto
+            @Valid @RequestBody MessageReadDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setUserId(userDetails.getId());
+        dto.setUserId(userSecurity.getId());
         return chatService.readMessage(dto);
     }
 
     @PutMapping("/chats/likeMessage")
     public MessageDTO readMessage(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody MessageLikeDTO dto
+            @Valid @RequestBody MessageLikeDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setUserId(userDetails.getId());
+        dto.setUserId(userSecurity.getId());
         return chatService.toggleLikeMessage(dto);
     }
 }

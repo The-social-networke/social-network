@@ -28,11 +28,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean create(UserCreateDTO dto) {
-        User user = userMapper.ToEntity(dto);
-        user.setRoles(Set.of(Role.ROLE_USER));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
-        userRepository.save(user);
+        User entity = userMapper.toEntity(dto);
+        entity.setRoles(Set.of(Role.ROLE_USER));
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        entity.setEnabled(true);
+        userRepository.save(entity);
         return true;
     }
 
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO update(UserUpdateDTO dto) {
-        User entity = userMapper.ToEntity(dto);
+        User entity = userMapper.toEntity(dto);
         User user = userRepository.findById(entity.getId()).orElseThrow();
 
         if(dto.getNewPassword() != null) {

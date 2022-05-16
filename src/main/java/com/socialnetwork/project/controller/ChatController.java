@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -40,14 +41,14 @@ public class ChatController {
 
     @GetMapping
     public List<ChatListDTO> getAllChats(
-           @CurrentUser UserSecurity userSecurity
+            @CurrentUser UserSecurity userSecurity
     ) {
         return chatService.getAllChatsByUserId(userSecurity.getId());
     }
 
     @PostMapping("/get-chat")
     public ChatDTO getChatRoomByUsersOrElseCreate(
-            @RequestBody ChatCreateDTO dto,
+            @Valid @RequestBody ChatCreateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {
         dto.setCurrentUserId(userSecurity.getId());
@@ -63,19 +64,19 @@ public class ChatController {
 
     @PostMapping
     public ChatDTO createChat(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody ChatCreateDTO dto
+            @Valid @RequestBody ChatCreateDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setCurrentUserId(userDetails.getId());
+        dto.setCurrentUserId(userSecurity.getId());
         return chatService.createChat(dto);
     }
 
     @DeleteMapping
     public boolean deleteChat(
-            @CurrentUser UserSecurity userDetails,
-            @RequestBody ChatDeleteDTO dto
+            @Valid @RequestBody ChatDeleteDTO dto,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setUserId(userDetails.getId());
+        dto.setUserId(userSecurity.getId());
         return chatService.deleteChat(dto);
     }
 }
