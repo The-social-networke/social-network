@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("profile")
-    public UserDTO getProfile(
+    public UserDTO profile(
             @CurrentUser UserSecurity userSecurity
     ) {
         return userService.getById(userSecurity.getId());

@@ -5,17 +5,22 @@ import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.entity.enums.Role;
+import com.socialnetwork.project.exception.ChatException;
 import com.socialnetwork.project.mapper.UserMapper;
 import com.socialnetwork.project.repository.UserRepository;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Set;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -28,6 +33,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean create(UserCreateDTO dto) {
+        if(findByUsername(dto.getUsername()) != null) {
+            throw new BadCredentialsException("username");
+        }
+        if(findByEmail(dto.getEmail()) != null) {
+            throw new BadCredentialsException("email");
+        }
+        if(findByPhone(dto.getPhone()) != null) {
+            throw new BadCredentialsException("phone");
+        }
         User entity = userMapper.toEntity(dto);
         entity.setRoles(Set.of(Role.ROLE_USER));
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
@@ -48,6 +62,15 @@ public class UserServiceImpl implements UserService {
         User entity = userMapper.toEntity(dto);
         User user = userRepository.findById(entity.getId()).orElseThrow();
 
+        if(!user.getUsername().equals(entity.getUsername()) && findByEmail(dto.getEmail()) != null) {
+            throw new BadCredentialsException("username");
+        }
+        if(!user.getEmail().equals(entity.getEmail()) && findByEmail(dto.getEmail()) != null) {
+            throw new BadCredentialsException("email");
+        }
+        if(!user.getPhone().equals(entity.getPhone()) && findByPhone(dto.getPhone()) != null) {
+            throw new BadCredentialsException("phone");
+        }
         if(dto.getNewPassword() != null) {
             if(passwordEncoder.matches(user.getPassword(), entity.getPassword())){
                 entity.setPassword(passwordEncoder.encode(dto.getNewPassword()));
@@ -66,6 +89,12 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
 
     @Override
     @Transactional(readOnly = true)

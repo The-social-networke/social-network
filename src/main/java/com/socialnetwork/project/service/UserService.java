@@ -12,6 +12,7 @@ public interface UserService {
     UserDTO update(UserUpdateDTO dto);
     boolean delete(Long userId);
 
+    User findByUsername(String username);
     User findByEmail(String email);
     User findByPhone(String phone);
 }

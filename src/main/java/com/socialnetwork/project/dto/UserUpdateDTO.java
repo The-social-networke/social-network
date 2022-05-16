@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -38,7 +39,7 @@ public class UserUpdateDTO {
     @Size(max = 64, message = "Phone must be up to 64")
     private String phone;
 
-    @NotBlank(message = "Sex cannot be empty")
+    @NotNull
     private Sex sex;
 
     @NotBlank(message = "Password cannot be empty")

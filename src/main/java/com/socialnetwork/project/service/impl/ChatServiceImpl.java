@@ -65,7 +65,7 @@ public class ChatServiceImpl implements ChatService {
         log.info("getChatRoomByUsersOrElseCreate by users with currentUserId = {}, and userId = {}", dto.getCurrentUserId(), dto.getUserId());
 
         Optional<Chat> chat = chatRepository.findChatByUsers(dto.getCurrentUserId(), dto.getUserId());
-        if(chat.isPresent()) {
+        if(chat.isEmpty()) {
             User user = userRepository.findById(dto.getCurrentUserId()).orElseThrow();
             User anotherUser = userRepository.findById(dto.getUserId()).orElseThrow();
 
@@ -87,7 +87,7 @@ public class ChatServiceImpl implements ChatService {
 
         User systemUser = userRepository.findByEmail(systemUserEmail).orElse(new User());
         Optional<Chat> chat = chatRepository.findChatByUsers(userId, systemUser.getId());
-        if(!chat.isPresent()) {
+        if(chat.isEmpty()) {
             Chat entity = new Chat()
                     .toBuilder()
                     .users(Set.of(
