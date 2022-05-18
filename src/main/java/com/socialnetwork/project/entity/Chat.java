@@ -9,7 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -39,7 +41,7 @@ public class Chat {
     private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, targetEntity = Message.class)
-    private Set<Message> messages = new HashSet<>();
+    private List<Message> messages = new ArrayList<>();
 
     @CreationTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)

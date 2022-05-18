@@ -23,6 +23,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -57,7 +58,7 @@ public class ChatServiceImpl implements ChatService {
         Chat chat = getChatOrElseThrow(chatId);
         checkIfUserMemberOfChat(chat, userId);
 
-        return chatMapper.toChatDTO(chat);
+        return chatMapper.toChatDTO(sortChatMessages(chat));
     }
 
     @Override
@@ -65,11 +66,11 @@ public class ChatServiceImpl implements ChatService {
     public ChatDTO getChatByUserOrElseCreate(ChatCreateDTO dto) {
         log.info("getChatRoomByUsersOrElseCreate by users with currentUserId = {}, and userId = {}", dto.getCurrentUserId(), dto.getUserId());
 
-        if(dto.getCurrentUserId() == dto.getUserId()) {
+        if (dto.getCurrentUserId() == dto.getUserId()) {
             throw new BadCredentialsException("You can't chat with yourself");
         }
         Optional<Chat> chat = chatRepository.findChatByUsers(dto.getCurrentUserId(), dto.getUserId());
-        if(chat.isEmpty()) {
+        if (chat.isEmpty()) {
             User user = userRepository.findById(dto.getCurrentUserId()).orElseThrow();
             User anotherUser = userRepository.findById(dto.getUserId()).orElseThrow();
 
@@ -81,7 +82,7 @@ public class ChatServiceImpl implements ChatService {
                     chatRepository.save(entity)
             );
         }
-        return chatMapper.toChatDTO(chat.get());
+        return chatMapper.toChatDTO(sortChatMessages(chat.get()));
     }
 
     @Override
@@ -91,7 +92,7 @@ public class ChatServiceImpl implements ChatService {
 
         User systemUser = userRepository.findByEmail(systemUserEmail).orElse(new User());
         Optional<Chat> chat = chatRepository.findChatByUsers(userId, systemUser.getId());
-        if(chat.isEmpty()) {
+        if (chat.isEmpty()) {
             Chat entity = new Chat()
                     .toBuilder()
                     .users(Set.of(
@@ -103,7 +104,7 @@ public class ChatServiceImpl implements ChatService {
                     chatRepository.save(entity)
             );
         }
-        return chatMapper.toChatDTO(chat.get());
+        return chatMapper.toChatDTO(sortChatMessages(chat.get()));
     }
 
     @Override
@@ -127,7 +128,7 @@ public class ChatServiceImpl implements ChatService {
     public ChatDTO createChat(ChatCreateDTO dto) {
         log.info("Create chat");
 
-        if(chatRepository.existsChatByUsers(dto.getCurrentUserId(), dto.getUserId())) {
+        if (chatRepository.existsChatByUsers(dto.getCurrentUserId(), dto.getUserId())) {
             throw new ChatException(ErrorCodeException.CHAT_WITH_THESE_USERS_ALREADY_EXISTS);
         }
 
@@ -184,7 +185,7 @@ public class ChatServiceImpl implements ChatService {
         checkIfUserMemberOfChat(chat, dto.getUserId());
 
         Message updateMessage = messageService.updateMessage(dto);
-        if(chatRepository.isLastMessageInChat(chat.getId(), updateMessage.getId())) {
+        if (chatRepository.isLastMessageInChat(chat.getId(), updateMessage.getId())) {
             User anotherUser = getAnotherUserIdFromChat(chat, dto.getUserId());
             template.convertAndSend(USER_SOCKET_NOTIFICATION + anotherUser.getId(), convertToChatMessageStatusDTO(chat.getId(), updateMessage, MessageStatus.UPDATED));
         }
@@ -206,7 +207,7 @@ public class ChatServiceImpl implements ChatService {
 
         Message deletedMessage = messageService.deleteMessage(dto);
 
-        if(isLastMessage) {
+        if (isLastMessage) {
             var lastMessage = messageRepository.findLastMessageInChat(chat.getId());
             var chatMessageDTO = convertToChatMessageStatusDTO(chat.getId(), lastMessage.orElse(null), MessageStatus.DELETED);
             var anotherUser = getAnotherUserIdFromChat(chat, dto.getUserId());
@@ -251,6 +252,14 @@ public class ChatServiceImpl implements ChatService {
         return messageMapper.toMessageDTO(changedMessage);
     }
 
+    private Chat sortChatMessages(Chat chat) {
+        chat.setMessages(
+                chat.getMessages().stream()
+                        .sorted(Comparator.comparing(Message::getSentAt))
+                        .collect(Collectors.toList())
+        );
+        return chat;
+    }
 
     private Chat getChatOrElseThrow(Long chatId) {
         return chatRepository.findById(chatId)
@@ -261,7 +270,7 @@ public class ChatServiceImpl implements ChatService {
         boolean isMemberOfChat = chat.getUsers()
                 .stream()
                 .anyMatch(u -> u.getId().equals(userId));
-        if(!isMemberOfChat) {
+        if (!isMemberOfChat) {
             throw new ChatException(ErrorCodeException.NOT_MEMBER_OF_CHAT);
         }
     }
