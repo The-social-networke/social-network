@@ -4,6 +4,7 @@ import com.socialnetwork.project.annotation.CurrentUser;
 import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.security.UserSecurity;
+import com.socialnetwork.project.service.ImageService;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +45,26 @@ public class UserController {
         return userService.delete(userSecurity.getId());
     }
 
-    @GetMapping("set-avatar")
+    @PostMapping("avatar")
     public String setAvatar(
             @RequestParam("file") MultipartFile file,
             @CurrentUser UserSecurity userSecurity
     ) {
-        return null;
+        return userService.saveAvatar(file, userSecurity.getId());
+    }
+
+    @PutMapping("avatar")
+    public boolean updateAvatar(
+            @RequestParam("file") MultipartFile file,
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.updateAvatar(file, userSecurity.getId());
+    }
+
+    @DeleteMapping("avatar")
+    public boolean deleteAvatar(
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.deleteAvatar(userSecurity.getId());
     }
 }

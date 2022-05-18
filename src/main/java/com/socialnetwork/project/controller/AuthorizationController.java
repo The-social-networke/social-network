@@ -27,6 +27,14 @@ public class AuthorizationController {
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
 
+    @PostMapping("/registration")
+    public ResponseEntity registration(
+            @Valid @RequestBody UserCreateDTO dto
+    ) {
+        userService.create(dto);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<String> login(
             @Valid @RequestBody AuthenticationDTO dto
@@ -36,13 +44,5 @@ public class AuthorizationController {
                 .getPrincipal();
 
         return ResponseEntity.ok(jwtProvider.generateToken(user));
-    }
-
-    @PostMapping("/registration")
-    public ResponseEntity registration(
-            @Valid @RequestBody UserCreateDTO dto
-    ) {
-        userService.create(dto);
-        return ResponseEntity.ok().build();
     }
 }

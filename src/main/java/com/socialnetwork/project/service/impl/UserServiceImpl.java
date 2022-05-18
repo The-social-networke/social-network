@@ -8,6 +8,7 @@ import com.socialnetwork.project.entity.enums.Role;
 import com.socialnetwork.project.exception.ChatException;
 import com.socialnetwork.project.mapper.UserMapper;
 import com.socialnetwork.project.repository.UserRepository;
+import com.socialnetwork.project.service.ImageService;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -28,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
+    private final ImageService imageService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -87,6 +91,33 @@ public class UserServiceImpl implements UserService {
         entity.setEnabled(false);
         userRepository.save(entity);
         return true;
+    }
+
+
+    @Override
+    public String saveAvatar(MultipartFile file, Long userId) {
+        User entity = userRepository.findById(userId).orElseThrow();
+        String avatar = imageService.saveAvatar(file, userId);
+        entity.setAvatar(avatar);
+        userRepository.save(entity);
+        return avatar;
+    }
+
+    @Override
+    public boolean updateAvatar(MultipartFile file, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return imageService.updateAvatar(user.getAvatar(), file);
+    }
+
+    @Override
+    public boolean deleteAvatar(Long userId) {
+        User entity = userRepository.findById(userId).orElseThrow();
+        if(imageService.deleteAvatar(entity.getAvatar())) {
+            entity.setAvatar(null);
+            userRepository.save(entity);
+            return true;
+        }
+        return false;
     }
 
 

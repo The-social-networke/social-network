@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +65,9 @@ public class ChatServiceImpl implements ChatService {
     public ChatDTO getChatByUserOrElseCreate(ChatCreateDTO dto) {
         log.info("getChatRoomByUsersOrElseCreate by users with currentUserId = {}, and userId = {}", dto.getCurrentUserId(), dto.getUserId());
 
+        if(dto.getCurrentUserId() == dto.getUserId()) {
+            throw new BadCredentialsException("You can't chat with yourself");
+        }
         Optional<Chat> chat = chatRepository.findChatByUsers(dto.getCurrentUserId(), dto.getUserId());
         if(chat.isEmpty()) {
             User user = userRepository.findById(dto.getCurrentUserId()).orElseThrow();

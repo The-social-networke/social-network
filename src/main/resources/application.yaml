@@ -38,7 +38,6 @@ server:
 #app
 app:
   system-user-email: outwork@gmail.com
-  filepath:
   auth:
     not-auth-endpoints: /login,
                         /registration
