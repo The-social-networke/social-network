@@ -4,6 +4,7 @@ import com.socialnetwork.project.annotation.CurrentUser;
 import com.socialnetwork.project.dto.*;
 import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.service.ChatService;
+import com.socialnetwork.project.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChatSocketController {
 
+    private final MessageService messageService;
     private final ChatService chatService;
 
     @PostMapping("/chats/sendMessage")
@@ -22,7 +24,8 @@ public class ChatSocketController {
             @CurrentUser UserSecurity userSecurity
     ) {
         dto.setUserId(userSecurity.getId());
-        return chatService.sendMessage(dto);
+        MessageDTO message = chatService.sendMessage(dto);
+        return messageService.getMessageById(message.getId());
     }
 
     @PutMapping("/chats/updateMessage")

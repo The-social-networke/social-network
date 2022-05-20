@@ -6,8 +6,14 @@ import com.socialnetwork.project.entity.Message;
 public interface MessageService {
 
     Message sendMessage(MessageCreateDTO dto);
+
     Message updateMessage(MessageUpdateDTO dto);
+
     Message deleteMessage(MessageDeleteDTO dto);
+
     Message readMessage(MessageReadDTO dto);
+
     Message toggleLikeMessage(MessageLikeDTO dto);
+
+    MessageDTO getMessageById(Long messageId);
 }

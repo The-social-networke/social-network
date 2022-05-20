@@ -1,25 +1,19 @@
 package com.socialnetwork.project.service.impl;
 
 import com.socialnetwork.project.dto.*;
-import com.socialnetwork.project.entity.Chat;
 import com.socialnetwork.project.entity.Message;
 import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.entity.enums.MessageStatus;
 import com.socialnetwork.project.exception.ChatException;
 import com.socialnetwork.project.mapper.MessageMapper;
-import com.socialnetwork.project.repository.ChatRepository;
 import com.socialnetwork.project.repository.MessageRepository;
 import com.socialnetwork.project.repository.UserRepository;
 import com.socialnetwork.project.service.MessageService;
-import com.socialnetwork.project.service.UserService;
 import com.socialnetwork.project.util.ErrorCodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -45,7 +39,7 @@ public class MessageServiceImpl implements MessageService {
     public Message updateMessage(MessageUpdateDTO dto) {
         Message message = messageRepository.findById(dto.getMessageId()).orElseThrow();
 
-        if(message.getUser().getId() != dto.getUserId()) {
+        if (message.getUser().getId() != dto.getUserId()) {
             throw new ChatException(ErrorCodeException.USER_CANNOT_UPDATE_NOT_OWN_MESSAGE);
         }
 
@@ -63,7 +57,7 @@ public class MessageServiceImpl implements MessageService {
     public Message deleteMessage(MessageDeleteDTO dto) {
         Message message = messageRepository.findById(dto.getMessageId()).orElseThrow();
 
-        if(message.getUser().getId() != dto.getUserId()) {
+        if (message.getUser().getId() != dto.getUserId()) {
             throw new ChatException(ErrorCodeException.USER_CANNOT_DELETE_NOT_OWN_MESSAGE);
         }
 
@@ -77,7 +71,7 @@ public class MessageServiceImpl implements MessageService {
     public Message readMessage(MessageReadDTO dto) {
         Message message = messageRepository.findById(dto.getMessageId()).orElseThrow();
 
-        if(message.getUser().getId() == dto.getUserId()) {
+        if (message.getUser().getId() == dto.getUserId()) {
             throw new ChatException(ErrorCodeException.USER_CANNOT_READ_HIS_MESSAGE);
         }
 
@@ -85,7 +79,7 @@ public class MessageServiceImpl implements MessageService {
                 .stream()
                 .map(User::getId)
                 .anyMatch(id -> id == dto.getUserId());
-        if(isAlreadyRead) {
+        if (isAlreadyRead) {
             return message;
         }
 
@@ -100,7 +94,7 @@ public class MessageServiceImpl implements MessageService {
     public Message toggleLikeMessage(MessageLikeDTO dto) {
         Message message = messageRepository.findById(dto.getMessageId()).orElseThrow();
 
-        if(message.getUser().getId() == dto.getUserId()) {
+        if (message.getUser().getId() == dto.getUserId()) {
             throw new ChatException(ErrorCodeException.USER_CANNOT_READ_HIS_MESSAGE);
         }
 
@@ -109,19 +103,25 @@ public class MessageServiceImpl implements MessageService {
                 .map(User::getId)
                 .anyMatch(id -> id == dto.getUserId());
         boolean isLikeDTO = Boolean.TRUE.equals(dto.getIsLike());
-        if(isAlreadyLiked == isLikeDTO) {
+        if (isAlreadyLiked == isLikeDTO) {
             return message;
         }
 
-        if(isLikeDTO) {
+        if (isLikeDTO) {
             message.getLikedMessages().add(userRepository.findById(dto.getUserId()).orElseThrow());
-        }
-        else {
+        } else {
             message.getLikedMessages().remove(userRepository.findById(dto.getUserId()).orElseThrow());
         }
         return messageRepository.save(message)
                 .toBuilder()
                 .messageStatus(MessageStatus.UPDATED)
                 .build();
+    }
+
+    @Override
+    public MessageDTO getMessageById(Long messageId) {
+        return messageMapper.toMessageDTO(
+                messageRepository.findById(messageId).orElseThrow()
+        );
     }
 }

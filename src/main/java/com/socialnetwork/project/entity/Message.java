@@ -11,7 +11,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -69,6 +68,7 @@ public class Message implements Serializable {
     @Transient
     private MessageStatus messageStatus;
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "read_messages",
@@ -77,6 +77,7 @@ public class Message implements Serializable {
     )
     private Set<User> readMessages = new HashSet<>();
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "liked_messages",
