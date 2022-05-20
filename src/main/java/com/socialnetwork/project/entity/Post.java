@@ -47,7 +47,6 @@ public class Post {
     private LocalDateTime createdAt;
 
 
-
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "liked_posts",

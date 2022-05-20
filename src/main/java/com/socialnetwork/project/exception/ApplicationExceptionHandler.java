@@ -2,24 +2,14 @@ package com.socialnetwork.project.exception;
 
 import com.socialnetwork.project.dto.ErrorDTO;
 import com.socialnetwork.project.util.ErrorCodeException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.impl.crypto.JwtSignatureValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.HandlerMethod;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
-
-import java.util.Map;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
@@ -53,10 +43,10 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(ChatException.class)
     public ResponseEntity<Object> handleNotFoundError(ChatException ex) {
-        if(ex.getErrorCodeException().equals(ErrorCodeException.UNAUTHORIZED)) {
+        if (ex.getErrorCodeException().equals(ErrorCodeException.UNAUTHORIZED)) {
             return new ResponseEntity<>("unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        if(ex.getErrorCodeException().equals(ErrorCodeException.FORBIDDEN)) {
+        if (ex.getErrorCodeException().equals(ErrorCodeException.FORBIDDEN)) {
             return new ResponseEntity<>("forbidden", HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(ErrorDTO.builder()

@@ -15,29 +15,29 @@ public interface ChatQuery {
                     "                JOIN chat_users another_user " +
                     "                    ON user_chat.chat_id = another_user.chat_id " +
                     "                    AND another_user.user_id != :userId " +
-                                    // -- JOIN LAST MESSAGE FOR CHAT
+                    // -- JOIN LAST MESSAGE FOR CHAT
                     "                LEFT JOIN " +
                     "                ( " +
-                                        // -- SELECT UNIQUE MESSAGE FOR EACH CHAT
+                    // -- SELECT UNIQUE MESSAGE FOR EACH CHAT
                     "                    SELECT DISTINCT ON (chat_id) chat_id, id, text, user_id, sent_at FROM " +
                     "                    ( " +
-                                             // -- SELECT ALL SORTED MESSAGE
+                    // -- SELECT ALL SORTED MESSAGE
                     "                        SELECT * FROM messages " +
                     "                        ORDER BY messages.chat_id, sent_at DESC " +
                     "                    ) ordered_message " +
                     "                ) AS message " +
                     "                    ON message.chat_id = chat.id " +
-                                        // -- JOIN AMOUNT OF NOT READ MESSAGE FOR ALL USER'S CHATS
+                    // -- JOIN AMOUNT OF NOT READ MESSAGE FOR ALL USER'S CHATS
                     "                    LEFT JOIN ( " +
-                                            // -- SELECT AMOUNT OF NOT READ MESSAGE FOR ALL USER'S CHATS
+                    // -- SELECT AMOUNT OF NOT READ MESSAGE FOR ALL USER'S CHATS
                     "                        SELECT messages.chat_id, COUNT(*) as amountNotReadMessages " +
                     "                        FROM messages " +
-                                                // -- JOIN ALL MESSAGE FOR ALL CHATS
+                    // -- JOIN ALL MESSAGE FOR ALL CHATS
                     "                            JOIN chat_users " +
                     "                                ON chat_users.user_id = :userId " +
                     "                                AND chat_users.chat_id = messages.chat_id " +
                     "                                AND messages.user_id != :userId " +
-                                                // -- JOIN ALL READ MESSAGE
+                    // -- JOIN ALL READ MESSAGE
                     "                            LEFT JOIN read_messages " +
                     "                               ON read_messages.message_id = messages.id " +
                     "                                    WHERE read_messages.user_id IS NULL " +

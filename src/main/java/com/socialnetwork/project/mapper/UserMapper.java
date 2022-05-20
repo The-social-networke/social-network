@@ -1,6 +1,5 @@
 package com.socialnetwork.project.mapper;
 
-import com.socialnetwork.project.dto.AuthenticationDTO;
 import com.socialnetwork.project.dto.UserCreateDTO;
 import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
@@ -11,6 +10,7 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
 
     User toEntity(UserCreateDTO userDTO);
+
     User toEntity(UserUpdateDTO userDTO);
 
     UserDTO toUserDTO(User user);

@@ -36,6 +36,7 @@ public interface MessageMapper {
             @Mapping(source = "likedMessages", target = "likedMessages", qualifiedByName = "usersToUsersId"),
     })
     MessageDTO toMessageDTO(Message message);
+
     @Mappings({
             @Mapping(source = "user.id", target = "userId"),
             @Mapping(source = "chat.id", target = "chatId"),

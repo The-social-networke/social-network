@@ -1,14 +1,12 @@
 package com.socialnetwork.project.controller;
 
 import com.socialnetwork.project.annotation.CurrentUser;
-import com.socialnetwork.project.dto.*;
-import com.socialnetwork.project.entity.*;
-import com.socialnetwork.project.mapper.ChatMapper;
-import com.socialnetwork.project.mapper.MessageMapper;
+import com.socialnetwork.project.dto.ChatCreateDTO;
+import com.socialnetwork.project.dto.ChatDTO;
+import com.socialnetwork.project.dto.ChatDeleteDTO;
+import com.socialnetwork.project.dto.ChatListDTO;
 import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.service.ChatService;
-import com.socialnetwork.project.service.MessageService;
-import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

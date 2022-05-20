@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.awt.image.ImageProducer;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;

@@ -5,7 +5,6 @@ import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.entity.enums.Role;
-import com.socialnetwork.project.exception.ChatException;
 import com.socialnetwork.project.mapper.UserMapper;
 import com.socialnetwork.project.repository.UserRepository;
 import com.socialnetwork.project.service.ImageService;
@@ -17,7 +16,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
@@ -37,13 +35,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean create(UserCreateDTO dto) {
-        if(findByUsername(dto.getUsername()) != null) {
+        if (findByUsername(dto.getUsername()) != null) {
             throw new BadCredentialsException("username");
         }
-        if(findByEmail(dto.getEmail()) != null) {
+        if (findByEmail(dto.getEmail()) != null) {
             throw new BadCredentialsException("email");
         }
-        if(findByPhone(dto.getPhone()) != null) {
+        if (findByPhone(dto.getPhone()) != null) {
             throw new BadCredentialsException("phone");
         }
         User entity = userMapper.toEntity(dto);
@@ -66,17 +64,17 @@ public class UserServiceImpl implements UserService {
         User entity = userMapper.toEntity(dto);
         User user = userRepository.findById(entity.getId()).orElseThrow();
 
-        if(!user.getUsername().equals(entity.getUsername()) && findByEmail(dto.getEmail()) != null) {
+        if (!user.getUsername().equals(entity.getUsername()) && findByEmail(dto.getEmail()) != null) {
             throw new BadCredentialsException("username");
         }
-        if(!user.getEmail().equals(entity.getEmail()) && findByEmail(dto.getEmail()) != null) {
+        if (!user.getEmail().equals(entity.getEmail()) && findByEmail(dto.getEmail()) != null) {
             throw new BadCredentialsException("email");
         }
-        if(!user.getPhone().equals(entity.getPhone()) && findByPhone(dto.getPhone()) != null) {
+        if (!user.getPhone().equals(entity.getPhone()) && findByPhone(dto.getPhone()) != null) {
             throw new BadCredentialsException("phone");
         }
-        if(dto.getNewPassword() != null) {
-            if(passwordEncoder.matches(user.getPassword(), entity.getPassword())){
+        if (dto.getNewPassword() != null) {
+            if (passwordEncoder.matches(user.getPassword(), entity.getPassword())) {
                 entity.setPassword(passwordEncoder.encode(dto.getNewPassword()));
             }
         }
@@ -112,7 +110,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteAvatar(Long userId) {
         User entity = userRepository.findById(userId).orElseThrow();
-        if(imageService.deleteAvatar(entity.getAvatar())) {
+        if (imageService.deleteAvatar(entity.getAvatar())) {
             entity.setAvatar(null);
             userRepository.save(entity);
             return true;

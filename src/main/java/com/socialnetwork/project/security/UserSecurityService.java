@@ -18,7 +18,7 @@ public class UserSecurityService implements UserDetailsService {
     public UserSecurity loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.findByEmail(email);
 
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("User with email: " + email + " is not found!");
         }
 

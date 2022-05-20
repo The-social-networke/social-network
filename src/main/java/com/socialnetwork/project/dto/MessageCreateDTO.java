@@ -1,14 +1,11 @@
 package com.socialnetwork.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.socialnetwork.project.entity.Chat;
-import com.socialnetwork.project.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter

@@ -1,12 +1,8 @@
 package com.socialnetwork.project.dto;
 
-import com.socialnetwork.project.entity.Chat;
-import com.socialnetwork.project.entity.User;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Getter

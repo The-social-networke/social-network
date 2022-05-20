@@ -65,7 +65,6 @@ public class User {
     private boolean enabled;
 
 
-
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Profile.class)
     private Profile profile;
 

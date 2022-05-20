@@ -4,7 +4,6 @@ import com.socialnetwork.project.annotation.CurrentUser;
 import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.security.UserSecurity;
-import com.socialnetwork.project.service.ImageService;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

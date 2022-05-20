@@ -36,20 +36,24 @@ public class ChatServiceImpl implements ChatService {
 
     private static final String USER_SOCKET_NOTIFICATION = "/ws-users/";
     private static final String CHAT_SOCKET_NOTIFICATION = "/ws-chats/messages/";
-
-    @Value("${app.system-user-email}")
-    private String systemUserEmail;
-
     private final ChatRepository chatRepository;
     private final ChatMapper chatMapper;
-
     private final MessageRepository messageRepository;
     private final MessageService messageService;
     private final MessageMapper messageMapper;
-
     private final UserRepository userRepository;
-
     private final SimpMessagingTemplate template;
+    @Value("${app.system-user-email}")
+    private String systemUserEmail;
+
+    private static void checkIfUserMemberOfChat(Chat chat, Long userId) throws ChatException {
+        boolean isMemberOfChat = chat.getUsers()
+                .stream()
+                .anyMatch(u -> u.getId().equals(userId));
+        if (!isMemberOfChat) {
+            throw new ChatException(ErrorCodeException.NOT_MEMBER_OF_CHAT);
+        }
+    }
 
     @Override
     public ChatDTO getChatById(Long chatId, Long userId) {
@@ -264,15 +268,6 @@ public class ChatServiceImpl implements ChatService {
     private Chat getChatOrElseThrow(Long chatId) {
         return chatRepository.findById(chatId)
                 .orElseThrow(() -> new ChatException(ErrorCodeException.CHAT_NOT_FOUND));
-    }
-
-    private static void checkIfUserMemberOfChat(Chat chat, Long userId) throws ChatException {
-        boolean isMemberOfChat = chat.getUsers()
-                .stream()
-                .anyMatch(u -> u.getId().equals(userId));
-        if (!isMemberOfChat) {
-            throw new ChatException(ErrorCodeException.NOT_MEMBER_OF_CHAT);
-        }
     }
 
     private User getAnotherUserIdFromChat(Chat chat, Long userId) throws ChatException {
