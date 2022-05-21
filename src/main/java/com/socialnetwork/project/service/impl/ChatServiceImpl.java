@@ -217,7 +217,7 @@ public class ChatServiceImpl implements ChatService {
             var anotherUser = getAnotherUserIdFromChat(chat, dto.getUserId());
             template.convertAndSend(USER_SOCKET_NOTIFICATION + anotherUser.getId(), chatMessageDTO);
         }
-        template.convertAndSend(CHAT_SOCKET_NOTIFICATION + chat.getId(), deletedMessage);
+        template.convertAndSend(CHAT_SOCKET_NOTIFICATION + chat.getId(), messageMapper.toMessageDTO(deletedMessage));
 
         return messageMapper.toMessageDTO(deletedMessage);
     }

@@ -61,8 +61,9 @@ public class MessageServiceImpl implements MessageService {
             throw new ChatException(ErrorCodeException.USER_CANNOT_DELETE_NOT_OWN_MESSAGE);
         }
 
-        return messageRepository.save(message)
-                .toBuilder()
+        messageRepository.delete(message);
+
+        return message.toBuilder()
                 .messageStatus(MessageStatus.DELETED)
                 .build();
     }
