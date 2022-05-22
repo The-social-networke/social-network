@@ -185,7 +185,7 @@ public class ChatServiceImpl implements ChatService {
         log.info("Update message");
 
         Chat chat = chatRepository.findChatByMessageId(dto.getMessageId())
-                .orElseThrow(() -> new ChatException(ErrorCodeException.CHAT_NOT_FOUND));
+                .orElseThrow(() -> new ChatException(ErrorCodeException.MESSAGE_NOT_FOUND));
         checkIfUserMemberOfChat(chat, dto.getUserId());
 
         Message updateMessage = messageService.updateMessage(dto);
@@ -204,7 +204,7 @@ public class ChatServiceImpl implements ChatService {
         log.info("Delete message");
 
         Chat chat = chatRepository.findChatByMessageId(dto.getMessageId())
-                .orElseThrow(() -> new ChatException(ErrorCodeException.CHAT_NOT_FOUND));
+                .orElseThrow(() -> new ChatException(ErrorCodeException.MESSAGE_NOT_FOUND));
         checkIfUserMemberOfChat(chat, dto.getUserId());
 
         boolean isLastMessage = chatRepository.isLastMessageInChat(chat.getId(), dto.getMessageId());
@@ -228,7 +228,7 @@ public class ChatServiceImpl implements ChatService {
         log.info("Read message");
 
         Chat chat = chatRepository.findChatByMessageId(dto.getMessageId())
-                .orElseThrow(() -> new ChatException(ErrorCodeException.CHAT_NOT_FOUND));
+                .orElseThrow(() -> new ChatException(ErrorCodeException.MESSAGE_NOT_FOUND));
         checkIfUserMemberOfChat(chat, dto.getUserId());
 
         Message readMessage = messageService.readMessage(dto);
@@ -246,7 +246,7 @@ public class ChatServiceImpl implements ChatService {
         log.info("Like message {}", dto.getIsLike());
 
         Chat chat = chatRepository.findChatByMessageId(dto.getMessageId())
-                .orElseThrow(() -> new ChatException(ErrorCodeException.CHAT_NOT_FOUND));
+                .orElseThrow(() -> new ChatException(ErrorCodeException.MESSAGE_NOT_FOUND));
         checkIfUserMemberOfChat(chat, dto.getUserId());
 
         Message changedMessage = messageService.toggleLikeMessage(dto);

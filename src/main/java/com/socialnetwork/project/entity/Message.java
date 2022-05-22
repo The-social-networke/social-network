@@ -1,6 +1,7 @@
 package com.socialnetwork.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -69,7 +70,7 @@ public class Message implements Serializable {
     private MessageStatus messageStatus;
 
     @Builder.Default
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinTable(
             name = "read_messages",
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
@@ -78,7 +79,7 @@ public class Message implements Serializable {
     private Set<User> readMessages = new HashSet<>();
 
     @Builder.Default
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinTable(
             name = "liked_messages",
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),

@@ -1,5 +1,7 @@
 package com.socialnetwork.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ public class MessageDTO {
 
     private Long forwardId;
 
+    @JsonProperty("isUpdated")
     private boolean isUpdated;
 
     private LocalDateTime sentAt;

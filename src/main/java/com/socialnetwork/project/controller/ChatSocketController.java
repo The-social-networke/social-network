@@ -29,7 +29,7 @@ public class ChatSocketController {
     }
 
     @PutMapping("/chats/updateMessage")
-    public MessageDTO sendMessage(
+    public MessageDTO updateMessage(
             @Valid @RequestBody MessageUpdateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {
@@ -38,7 +38,7 @@ public class ChatSocketController {
     }
 
     @DeleteMapping("/chats/deleteMessage")
-    public MessageDTO sendMessage(
+    public MessageDTO deleteMessage(
             @Valid @RequestBody MessageDeleteDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {

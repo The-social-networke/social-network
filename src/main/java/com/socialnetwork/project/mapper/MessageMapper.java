@@ -32,6 +32,7 @@ public interface MessageMapper {
     @Mappings({
             @Mapping(source = "user.id", target = "userId"),
             @Mapping(source = "chat.id", target = "chatId"),
+            @Mapping(source = "updated", target = "isUpdated"),
             @Mapping(source = "readMessages", target = "readMessages", qualifiedByName = "usersToUsersId"),
             @Mapping(source = "likedMessages", target = "likedMessages", qualifiedByName = "usersToUsersId"),
     })
@@ -40,6 +41,7 @@ public interface MessageMapper {
     @Mappings({
             @Mapping(source = "user.id", target = "userId"),
             @Mapping(source = "chat.id", target = "chatId"),
+            @Mapping(source = "updated", target = "isUpdated"),
             @Mapping(source = "readMessages", target = "readMessages", qualifiedByName = "usersToUsersId"),
             @Mapping(source = "likedMessages", target = "likedMessages", qualifiedByName = "usersToUsersId"),
     })
