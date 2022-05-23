@@ -27,4 +27,6 @@ public interface ChatService {
     MessageDTO readMessage(MessageReadDTO dto);
 
     MessageDTO toggleLikeMessage(MessageLikeDTO dto);
+
+    List<UserDTO> searchChats(String search);
 }

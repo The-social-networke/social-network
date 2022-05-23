@@ -6,6 +6,8 @@ import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.entity.User;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -14,4 +16,5 @@ public interface UserMapper {
     User toEntity(UserUpdateDTO userDTO);
 
     UserDTO toUserDTO(User user);
+    List<UserDTO> toUserDTO(List<User> users);
 }

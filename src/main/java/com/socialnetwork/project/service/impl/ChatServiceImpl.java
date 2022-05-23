@@ -8,6 +8,7 @@ import com.socialnetwork.project.entity.enums.MessageStatus;
 import com.socialnetwork.project.exception.ChatException;
 import com.socialnetwork.project.mapper.ChatMapper;
 import com.socialnetwork.project.mapper.MessageMapper;
+import com.socialnetwork.project.mapper.UserMapper;
 import com.socialnetwork.project.repository.ChatRepository;
 import com.socialnetwork.project.repository.MessageRepository;
 import com.socialnetwork.project.repository.UserRepository;
@@ -36,12 +37,16 @@ public class ChatServiceImpl implements ChatService {
 
     private static final String USER_SOCKET_NOTIFICATION = "/ws-users/";
     private static final String CHAT_SOCKET_NOTIFICATION = "/ws-chats/messages/";
+
     private final ChatRepository chatRepository;
     private final ChatMapper chatMapper;
+
     private final MessageRepository messageRepository;
     private final MessageService messageService;
     private final MessageMapper messageMapper;
+
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final SimpMessagingTemplate template;
     @Value("${app.system-user-email}")
     private String systemUserEmail;
@@ -254,6 +259,13 @@ public class ChatServiceImpl implements ChatService {
         template.convertAndSend(CHAT_SOCKET_NOTIFICATION + chat.getId(), convertToChatMessageStatusDTO(chat.getId(), changedMessage, MessageStatus.UPDATED));
 
         return messageMapper.toMessageDTO(changedMessage);
+    }
+
+    @Override
+    public List<UserDTO> searchChats(String search) {
+        return userMapper.toUserDTO(
+                userRepository.searchUsers(search)
+        );
     }
 
     private Chat sortChatMessages(Chat chat) {

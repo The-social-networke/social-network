@@ -1,10 +1,7 @@
 package com.socialnetwork.project.controller;
 
 import com.socialnetwork.project.annotation.CurrentUser;
-import com.socialnetwork.project.dto.ChatCreateDTO;
-import com.socialnetwork.project.dto.ChatDTO;
-import com.socialnetwork.project.dto.ChatDeleteDTO;
-import com.socialnetwork.project.dto.ChatListDTO;
+import com.socialnetwork.project.dto.*;
 import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,13 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
+
+    @GetMapping("/search")
+    public List<UserDTO> searchChats(
+            @RequestParam("search") String search
+    ) {
+        return chatService.searchChats(search);
+    }
 
     @GetMapping
     public List<ChatListDTO> getAllChats(
