@@ -1,10 +1,13 @@
 package com.socialnetwork.project.service;
 
 import com.socialnetwork.project.dto.*;
+import com.socialnetwork.project.security.UserSecurity;
 
 import java.util.List;
 
 public interface ChatService {
+
+    List<UserDTO> searchChats(String search, UserSecurity userSecurity);
 
     ChatDTO getChatById(Long chatId, Long userId);
 
@@ -27,6 +30,4 @@ public interface ChatService {
     MessageDTO readMessage(MessageReadDTO dto);
 
     MessageDTO toggleLikeMessage(MessageLikeDTO dto);
-
-    List<UserDTO> searchChats(String search);
 }

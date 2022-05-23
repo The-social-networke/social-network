@@ -23,9 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByPhone(@Param("phone") String phone);
 
     @Query(value = "SELECT * FROM users " +
-            "WHERE name LIKE %:search% " +
-            "OR surname LIKE %:search% " +
-            "OR name LIKE %:search% " +
+            "WHERE LOWER(name) LIKE %:search% " +
+            "OR LOWER(surname) LIKE %:search% " +
+            "OR LOWER(username) LIKE %:search% " +
             "LIMIT 10",
             nativeQuery = true)
     List<User> searchUsers(@Param("search") String search);

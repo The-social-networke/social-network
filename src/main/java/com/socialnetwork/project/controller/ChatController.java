@@ -22,9 +22,10 @@ public class ChatController {
 
     @GetMapping("/search")
     public List<UserDTO> searchChats(
-            @RequestParam("search") String search
+            @RequestParam("search") String search,
+            @CurrentUser UserSecurity userSecurity
     ) {
-        return chatService.searchChats(search);
+        return chatService.searchChats(search, userSecurity);
     }
 
     @GetMapping

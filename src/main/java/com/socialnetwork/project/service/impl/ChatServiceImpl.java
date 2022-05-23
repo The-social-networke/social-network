@@ -12,6 +12,7 @@ import com.socialnetwork.project.mapper.UserMapper;
 import com.socialnetwork.project.repository.ChatRepository;
 import com.socialnetwork.project.repository.MessageRepository;
 import com.socialnetwork.project.repository.UserRepository;
+import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.service.ChatService;
 import com.socialnetwork.project.service.MessageService;
 import com.socialnetwork.project.util.ErrorCodeException;
@@ -262,9 +263,15 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<UserDTO> searchChats(String search) {
+    public List<UserDTO> searchChats(String search, UserSecurity userSecurity) {
+        List<User> users = userRepository.searchUsers(search.toLowerCase());
+        if(userSecurity != null) {
+            users = users.stream()
+                    .filter(user -> user.getId() != userSecurity.getId())
+                    .toList();
+        }
         return userMapper.toUserDTO(
-                userRepository.searchUsers(search)
+                users
         );
     }
 
