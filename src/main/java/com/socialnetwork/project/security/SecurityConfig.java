@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/chats/**").permitAll()
+                .antMatchers("/", "/chats/**", "/avatars/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/registration", "/login").permitAll()
