@@ -125,6 +125,7 @@ public class ChatServiceImpl implements ChatService {
                 .map(u -> {
                     User anotherUser = userRepository.findById(u.getAnotherUserId()).orElseThrow();
                     return u.toBuilder()
+                            .avatar(anotherUser.getAvatar())
                             .name(anotherUser.getName())
                             .surname(anotherUser.getSurname())
                             .build();

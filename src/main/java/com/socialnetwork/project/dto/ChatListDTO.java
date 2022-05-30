@@ -17,6 +17,8 @@ public class ChatListDTO {
 
     private Long userId;
 
+    private String avatar;
+
     private String name;
 
     private String surname;
