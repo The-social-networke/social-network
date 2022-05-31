@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -36,13 +37,13 @@ public class AuthorizationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<Map<String, String>> login(
             @Valid @RequestBody AuthenticationDTO dto
     ) {
         UserSecurity user = (UserSecurity) authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()))
                 .getPrincipal();
 
-        return ResponseEntity.ok(jwtProvider.generateToken(user));
+        return ResponseEntity.ok(Map.of("jwtToken", jwtProvider.generateToken(user)));
     }
 }
