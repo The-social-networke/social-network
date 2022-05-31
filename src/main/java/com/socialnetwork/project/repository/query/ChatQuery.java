@@ -3,7 +3,7 @@ package com.socialnetwork.project.repository.query;
 public interface ChatQuery {
 
     String FIND_ALL_CHATS_BY_USER_ID =
-            "SELECT chat.id chatId, another_user.user_id anotherUserId, message.user_id userId, message.id messageId, message.text as text, message.sent_at sentAt, " +
+            "SELECT chat.id chatId, another_user.user_id anotherUserId, message.user_id userId, message.id messageId, message.text as text, message.sent_at sentAt, chat.created_at createdAt, " +
                     "       read_count.amountNotReadMessages " +
                     // -- SELECT ALL CHATS
                     "            FROM chats chat " +

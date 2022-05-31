@@ -33,6 +33,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
                         .messageId(map.get("messageId") == null ? null : Long.parseLong(String.valueOf(map.get("messageId"))))
                         .text(map.get("text") == null ? null : (String) map.get("text"))
                         .sentAt(map.get("sentAt") == null ? null : ((Timestamp) map.get("sentAt")).toLocalDateTime())
+                        .createdAt(map.get("createdAt") == null ? null : ((Timestamp) map.get("createdAt")).toLocalDateTime())
                         .amountNotReadMessages(map.get("amountNotReadMessages") == null ? 0 : ((BigInteger) map.get("amountNotReadMessages")).intValue())
                         .build()
                 )

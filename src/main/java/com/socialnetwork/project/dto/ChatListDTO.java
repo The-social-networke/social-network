@@ -29,5 +29,7 @@ public class ChatListDTO {
 
     private LocalDateTime sentAt;
 
+    private LocalDateTime createdAt;
+
     private int amountNotReadMessages;
 }
