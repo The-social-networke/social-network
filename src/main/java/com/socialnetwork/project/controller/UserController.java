@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,6 +21,14 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/search")
+    public List<UserDTO> searchUsers(
+            @RequestParam("search") String search,
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.searchChats(search, userSecurity);
+    }
 
     @GetMapping("profile")
     public UserDTO profile(

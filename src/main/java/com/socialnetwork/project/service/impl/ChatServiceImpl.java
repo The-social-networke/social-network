@@ -263,19 +263,6 @@ public class ChatServiceImpl implements ChatService {
         return messageMapper.toMessageDTO(changedMessage);
     }
 
-    @Override
-    public List<UserDTO> searchChats(String search, UserSecurity userSecurity) {
-        List<User> users = userRepository.searchUsers(search.toLowerCase());
-        if(userSecurity != null) {
-            users = users.stream()
-                    .filter(user -> user.getId() != userSecurity.getId())
-                    .toList();
-        }
-        return userMapper.toUserDTO(
-                users
-        );
-    }
-
     private Chat sortChatMessages(Chat chat) {
         chat.setMessages(
                 chat.getMessages().stream()

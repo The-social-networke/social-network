@@ -20,14 +20,6 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    @GetMapping("/search")
-    public List<UserDTO> searchChats(
-            @RequestParam("search") String search,
-            @CurrentUser UserSecurity userSecurity
-    ) {
-        return chatService.searchChats(search, userSecurity);
-    }
-
     @GetMapping
     public List<ChatListDTO> getAllChats(
             @CurrentUser UserSecurity userSecurity

@@ -4,7 +4,10 @@ import com.socialnetwork.project.dto.UserCreateDTO;
 import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.entity.User;
+import com.socialnetwork.project.security.UserSecurity;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -21,6 +24,8 @@ public interface UserService {
     boolean updateAvatar(MultipartFile file, Long userId);
 
     boolean deleteAvatar(Long userId);
+
+    List<UserDTO> searchChats(String search, UserSecurity userSecurity);
 
     User findByUsername(String username);
 

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface ChatService {
 
-    List<UserDTO> searchChats(String search, UserSecurity userSecurity);
-
     ChatDTO getChatById(Long chatId, Long userId);
 
     ChatDTO getChatByUserOrElseCreate(ChatCreateDTO dto);

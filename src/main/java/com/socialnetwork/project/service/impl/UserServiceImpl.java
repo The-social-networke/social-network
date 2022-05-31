@@ -7,6 +7,7 @@ import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.entity.enums.Role;
 import com.socialnetwork.project.mapper.UserMapper;
 import com.socialnetwork.project.repository.UserRepository;
+import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.service.ImageService;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -36,13 +38,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean create(UserCreateDTO dto) {
         if (findByUsername(dto.getUsername()) != null) {
-            throw new BadCredentialsException("username");
+            throw new BadCredentialsException("Username is already exists");
         }
         if (findByEmail(dto.getEmail()) != null) {
-            throw new BadCredentialsException("email");
+            throw new BadCredentialsException("Email is already exists");
         }
         if (findByPhone(dto.getPhone()) != null) {
-            throw new BadCredentialsException("phone");
+            throw new BadCredentialsException("Phone is already exists");
         }
         User entity = userMapper.toEntity(dto);
         entity.setRoles(Set.of(Role.ROLE_USER));
@@ -65,13 +67,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(entity.getId()).orElseThrow();
 
         if (!user.getUsername().equals(entity.getUsername()) && findByEmail(dto.getEmail()) != null) {
-            throw new BadCredentialsException("username");
+            throw new BadCredentialsException("Username is already exists");
         }
         if (!user.getEmail().equals(entity.getEmail()) && findByEmail(dto.getEmail()) != null) {
-            throw new BadCredentialsException("email");
+            throw new BadCredentialsException("Email is already exists");
         }
         if (!user.getPhone().equals(entity.getPhone()) && findByPhone(dto.getPhone()) != null) {
-            throw new BadCredentialsException("phone");
+            throw new BadCredentialsException("Phone is already exists");
         }
         if (dto.getNewPassword() != null) {
             if (passwordEncoder.matches(user.getPassword(), entity.getPassword())) {
@@ -116,6 +118,19 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<UserDTO> searchChats(String search, UserSecurity userSecurity) {
+        List<User> users = userRepository.searchUsers(search.toLowerCase());
+        if (userSecurity != null) {
+            users = users.stream()
+                    .filter(user -> user.getId() != userSecurity.getId())
+                    .toList();
+        }
+        return userMapper.toUserDTO(
+                users
+        );
     }
 
 

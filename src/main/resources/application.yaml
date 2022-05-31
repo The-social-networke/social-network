@@ -33,6 +33,7 @@ server:
   error:
     whitelabel:
       enabled: false
+  port: 8081
 
 
 #app
