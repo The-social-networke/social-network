@@ -44,7 +44,7 @@ public interface ChatQuery {
                     "                            GROUP BY messages.chat_id " +
                     "                        ) as read_count " +
                     "                            ON read_count.chat_id = message.chat_id " +
-                    "                    ORDER BY message.sent_at DESC NULLS LAST;";
+                    "                    ORDER BY message.sent_at, chat.created_at DESC NULLS LAST;";
 
 
     String FIND_CHAT_BY_USERS =
