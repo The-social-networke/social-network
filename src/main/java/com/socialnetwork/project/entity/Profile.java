@@ -3,6 +3,7 @@ package com.socialnetwork.project.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,5 +27,6 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //private LocalDate birthday;
     //TODO: add any parametrs
 }

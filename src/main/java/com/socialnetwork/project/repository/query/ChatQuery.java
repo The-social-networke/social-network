@@ -3,7 +3,7 @@ package com.socialnetwork.project.repository.query;
 public interface ChatQuery {
 
     String FIND_ALL_CHATS_BY_USER_ID =
-            "SELECT chat.id chatId, another_user.user_id anotherUserId, message.user_id userId, message.id messageId, message.text as text, message.sent_at sentAt, chat.created_at createdAt, " +
+            "SELECT chat.id chatId, another_user.user_id anotherUserId, message.user_id userId, message.id messageId, message.text as text, message.sent_at sentAt, message.isRead as isRead, message.is_updated isUpdated, chat.created_at createdAt, " +
                     "       read_count.amountNotReadMessages " +
                     // -- SELECT ALL CHATS
                     "            FROM chats chat " +
@@ -19,10 +19,17 @@ public interface ChatQuery {
                     "                LEFT JOIN " +
                     "                ( " +
                     // -- SELECT UNIQUE MESSAGE FOR EACH CHAT
-                    "                    SELECT DISTINCT ON (chat_id) chat_id, id, text, user_id, sent_at FROM " +
+                    "                    SELECT DISTINCT ON (chat_id) chat_id, id, text, user_id, isRead, is_updated, sent_at FROM " +
                     "                    ( " +
                     // -- SELECT ALL SORTED MESSAGE
                     "                        SELECT * FROM messages " +
+                    // -- SELECT IS_READING MESSAGE
+                    "                               LEFT JOIN (" +
+                    "                                   SELECT read_messages.message_id, COUNT(*) as isRead " +
+                    "                                   FROM read_messages " +
+                    "                                   GROUP BY read_messages.message_id " +
+                    "                               ) AS read_message " +
+                    "                                   ON read_message.message_id = messages.id " +
                     "                        ORDER BY messages.chat_id, sent_at DESC " +
                     "                    ) ordered_message " +
                     "                ) AS message " +

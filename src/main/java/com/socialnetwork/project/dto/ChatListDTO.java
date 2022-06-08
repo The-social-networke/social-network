@@ -1,5 +1,6 @@
 package com.socialnetwork.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,12 @@ public class ChatListDTO {
     private String text;
 
     private LocalDateTime sentAt;
+
+    @JsonProperty("isRead")
+    private boolean isRead;
+
+    @JsonProperty("isUpdated")
+    private boolean isUpdated;
 
     private LocalDateTime createdAt;
 
