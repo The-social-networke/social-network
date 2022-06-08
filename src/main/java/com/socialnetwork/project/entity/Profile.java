@@ -27,6 +27,27 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //private LocalDate birthday;
-    //TODO: add any parametrs
+    @Column(name = "instagram")
+    private String instagram;
+
+    @Column(name = "telegram")
+    private String telegram;
+
+    @Column(name = "facebook")
+    private String facebook;
+
+    @Column(name = "discord")
+    private String discord;
+
+    @Column(name = "twitter")
+    private String twitter;
+
+    @Column(name = "linked_in")
+    private String linkedIn;
+
+    @Column(name = "skype")
+    private String skype;
+
+    @Column(name = "birthday")
+    private LocalDate birthday;
 }
