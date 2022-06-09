@@ -1,9 +1,12 @@
 package com.socialnetwork.project.controller;
 
 import com.socialnetwork.project.annotation.CurrentUser;
+import com.socialnetwork.project.dto.ProfileDTO;
+import com.socialnetwork.project.dto.ProfileUpdateDTO;
 import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.security.UserSecurity;
+import com.socialnetwork.project.service.ProfileService;
 import com.socialnetwork.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ProfileService profileService;
 
     @GetMapping("/search")
     public List<UserDTO> searchUsers(
@@ -30,27 +34,20 @@ public class UserController {
         return userService.searchChats(search, userSecurity);
     }
 
-    @GetMapping("profile")
-    public UserDTO profile(
+    @GetMapping()
+    public UserDTO user(
             @CurrentUser UserSecurity userSecurity
     ) {
         return userService.getById(userSecurity.getId());
     }
 
-    @PutMapping("profile")
-    public UserDTO updateProfile(
+    @PutMapping()
+    public UserDTO update(
             @Valid @RequestBody UserUpdateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {
         dto.setId(userSecurity.getId());
         return userService.update(dto);
-    }
-
-    @DeleteMapping("profile")
-    public boolean deleteProfile(
-            @CurrentUser UserSecurity userSecurity
-    ) {
-        return userService.delete(userSecurity.getId());
     }
 
     @PostMapping("avatar")
@@ -74,5 +71,21 @@ public class UserController {
             @CurrentUser UserSecurity userSecurity
     ) {
         return userService.deleteAvatar(userSecurity.getId());
+    }
+
+    @GetMapping("profile")
+    public ProfileDTO profile(
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return profileService.getById(userSecurity.getId());
+    }
+
+    @PutMapping("profile")
+    public ProfileDTO updateProfile(
+            @Valid @RequestBody ProfileUpdateDTO dto,
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        dto.setUserId(userSecurity.getId());
+        return profileService.update(dto);
     }
 }

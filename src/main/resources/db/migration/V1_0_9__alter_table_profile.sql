@@ -6,3 +6,4 @@ ALTER TABLE profiles ADD twitter VARCHAR(255);
 ALTER TABLE profiles ADD linked_in VARCHAR(255);
 ALTER TABLE profiles ADD skype VARCHAR(255);
 ALTER TABLE profiles ADD birthday DATE;
+ALTER TABLE profiles ADD description VARCHAR(255);

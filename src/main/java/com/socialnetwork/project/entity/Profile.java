@@ -50,4 +50,7 @@ public class Profile {
 
     @Column(name = "birthday")
     private LocalDate birthday;
+
+    @Column(name = "description")
+    private String description;
 }
