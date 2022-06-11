@@ -19,5 +19,6 @@ public interface ChatService {
     MessageDTO updateMessage(MessageUpdateDTO dto);
     MessageDTO deleteMessage(MessageDeleteDTO dto);
     MessageDTO readMessage(MessageReadDTO dto);
+    List<MessageDTO> readAllMessages(ChatReadAllMessageDTO dto);
     MessageDTO toggleLikeMessage(MessageLikeDTO dto);
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -53,6 +54,15 @@ public class ChatSocketController {
     ) {
         dto.setUserId(userSecurity.getId());
         return chatService.readMessage(dto);
+    }
+
+    @PutMapping("/chats/readAllMessages")
+    public List<MessageDTO> readAllMessages(
+            @Valid @RequestBody ChatReadAllMessageDTO dto,
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        dto.setUserId(userSecurity.getId());
+        return chatService.readAllMessages(dto);
     }
 
     @PutMapping("/chats/likeMessage")

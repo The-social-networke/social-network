@@ -20,11 +20,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -245,6 +247,31 @@ public class ChatServiceImpl implements ChatService {
         template.convertAndSend(CHAT_SOCKET_NOTIFICATION + chat.getId(), convertToChatMessageStatusDTO(chat.getId(), readMessage, MessageStatus.UPDATED));
 
         return messageMapper.toMessageDTO(readMessage);
+    }
+
+    @Override
+    public List<MessageDTO> readAllMessages(ChatReadAllMessageDTO dto) {
+        log.info("Read all messages");
+
+        User user = userRepository.findById(dto.getUserId()).orElseThrow();
+
+        Chat chat = chatRepository.findById(dto.getChatId())
+                .orElseThrow(() -> new ChatException(ErrorCodeException.CHAT_NOT_FOUND));
+        checkIfUserMemberOfChat(chat, dto.getUserId());
+
+        List<Message> messages = chat.getMessages().stream()
+                .filter(message -> !message.getUser().getId().equals(dto.getUserId()) &&
+                        !message.getReadMessages().contains(user))
+                .toList();
+        messages.forEach(message -> message.getReadMessages().add(user));
+
+        if(!messages.isEmpty()) {
+            messages = messageRepository.saveAll(messages);
+        }
+
+        //template.convertAndSend(CHAT_SOCKET_NOTIFICATION + chat.getId(), convertToChatMessageStatusDTO(chat.getId(), messages, MessageStatus.UPDATED));
+
+        return messageMapper.toMessageDTO(messages);
     }
 
     @Override
