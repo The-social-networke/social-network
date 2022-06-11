@@ -14,7 +14,7 @@ public interface ProfileMapper {
     Profile toEntity(ProfileUpdateDTO dto);
 
     @Mappings({
-        @Mapping(source = "user.id", target = "userId"),
+        @Mapping(source = "user.id", target = "id"),
         @Mapping(source = "user.avatar", target = "avatar"),
         @Mapping(source = "user.name", target = "name"),
         @Mapping(source = "user.surname", target = "surname"),

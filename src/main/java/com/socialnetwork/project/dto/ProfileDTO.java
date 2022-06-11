@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder(toBuilder = true)
 public class ProfileDTO {
 
-    private Long userId;
+    private Long id;
 
     private String avatar;
 
