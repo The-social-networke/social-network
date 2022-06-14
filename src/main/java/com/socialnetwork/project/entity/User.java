@@ -114,5 +114,3 @@ public class User {
     @ManyToMany(mappedBy = "likedMessages", fetch = FetchType.LAZY, targetEntity = Message.class)
     private Set<Message> likedMessages = new HashSet<>();
 }
-
-

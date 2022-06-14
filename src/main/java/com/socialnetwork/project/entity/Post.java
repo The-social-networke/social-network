@@ -47,6 +47,7 @@ public class Post {
     private LocalDateTime createdAt;
 
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(
             name = "liked_posts",
@@ -55,6 +56,7 @@ public class Post {
     )
     private Set<User> likedPosts = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, targetEntity = Comment.class)
     private Set<Comment> comments = new HashSet<>();
 }
