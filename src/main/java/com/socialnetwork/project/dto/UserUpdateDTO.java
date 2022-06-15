@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ import javax.validation.constraints.Size;
 public class UserUpdateDTO {
 
     @JsonIgnore
-    private Long id;
+    private Long userId;
 
     @NotBlank(message = "Name cannot be empty")
     @Size(max = 64, message = "Name must be between 8 and 64")
@@ -42,11 +43,29 @@ public class UserUpdateDTO {
     @NotNull
     private Sex sex;
 
-    @NotBlank(message = "Password cannot be empty")
+    /*@NotBlank(message = "Password cannot be empty")
     @Size(min = 8, max = 64, message = "Password must be between 8 and 64")
     private String password;
 
     @NotBlank(message = "New password cannot be empty")
     @Size(min = 8, max = 64, message = "New password must be between 8 and 64")
-    private String newPassword;
+    private String newPassword;*/
+
+    private String instagram;
+
+    private String telegram;
+
+    private String facebook;
+
+    private String discord;
+
+    private String twitter;
+
+    private String linkedIn;
+
+    private String skype;
+
+    private LocalDate birthday;
+
+    private String description;
 }

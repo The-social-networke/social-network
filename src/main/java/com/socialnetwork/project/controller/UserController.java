@@ -42,11 +42,11 @@ public class UserController {
     }
 
     @PutMapping()
-    public UserDTO update(
+    public ProfileDTO update(
             @Valid @RequestBody UserUpdateDTO dto,
             @CurrentUser UserSecurity userSecurity
     ) {
-        dto.setId(userSecurity.getId());
+        dto.setUserId(userSecurity.getId());
         return userService.update(dto);
     }
 

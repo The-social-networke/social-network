@@ -11,7 +11,7 @@ public interface UserService {
 
     boolean create(UserCreateDTO dto);
     UserDTO getById(Long userId);
-    UserDTO update(UserUpdateDTO dto);
+    ProfileDTO update(UserUpdateDTO dto);
     boolean delete(Long userId);
 
     String saveAvatar(MultipartFile file, Long userId);

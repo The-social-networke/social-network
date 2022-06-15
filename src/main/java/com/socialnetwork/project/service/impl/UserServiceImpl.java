@@ -1,11 +1,15 @@
 package com.socialnetwork.project.service.impl;
 
+import com.socialnetwork.project.dto.ProfileDTO;
 import com.socialnetwork.project.dto.UserCreateDTO;
 import com.socialnetwork.project.dto.UserDTO;
 import com.socialnetwork.project.dto.UserUpdateDTO;
+import com.socialnetwork.project.entity.Profile;
 import com.socialnetwork.project.entity.User;
 import com.socialnetwork.project.entity.enums.Role;
+import com.socialnetwork.project.mapper.ProfileMapper;
 import com.socialnetwork.project.mapper.UserMapper;
+import com.socialnetwork.project.repository.ProfileRepository;
 import com.socialnetwork.project.repository.UserRepository;
 import com.socialnetwork.project.security.UserSecurity;
 import com.socialnetwork.project.service.ImageService;
@@ -30,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
+    private final ProfileRepository profileRepository;
+    private final ProfileMapper profileMapper;
 
     private final ImageService imageService;
 
@@ -62,26 +69,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(UserUpdateDTO dto) {
-        User entity = userMapper.toEntity(dto);
-        User user = userRepository.findById(entity.getId()).orElseThrow();
+    public ProfileDTO update(UserUpdateDTO dto) {
+        User user = userRepository.findById(dto.getUserId()).orElseThrow();
 
-        if (!user.getUsername().equals(entity.getUsername()) && findByEmail(dto.getEmail()) != null) {
+        if (!user.getUsername().equals(dto.getUsername()) && findByEmail(dto.getEmail()) != null) {
             throw new BadCredentialsException("Username is already exists");
         }
-        if (!user.getEmail().equals(entity.getEmail()) && findByEmail(dto.getEmail()) != null) {
+        if (!user.getEmail().equals(dto.getEmail()) && findByEmail(dto.getEmail()) != null) {
             throw new BadCredentialsException("Email is already exists");
         }
-        if (!user.getPhone().equals(entity.getPhone()) && findByPhone(dto.getPhone()) != null) {
+        if (!user.getPhone().equals(dto.getPhone()) && findByPhone(dto.getPhone()) != null) {
             throw new BadCredentialsException("Phone is already exists");
         }
-        if (dto.getNewPassword() != null) {
-            if (passwordEncoder.matches(user.getPassword(), entity.getPassword())) {
-                entity.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-            }
+
+        user = user.toBuilder()
+                .name(dto.getName() == null ? user.getName() : dto.getName())
+                .surname(dto.getSurname() == null ? user.getSurname() : dto.getSurname())
+                .username(dto.getUsername() == null ? user.getUsername() : dto.getUsername())
+                .email(dto.getEmail() == null ? user.getEmail() : dto.getEmail())
+                .phone(dto.getPhone() == null ? user.getPhone() : dto.getPhone())
+                .sex(dto.getSex() == null ? user.getSex() : dto.getSex())
+                .build();
+        user = userRepository.save(user);
+
+        Profile profile = user.getProfile();
+        Profile entity = profileMapper.toEntity(dto);
+        if (profile == null) {
+            return profileMapper.toProfileDTO(
+                    profileRepository.save(entity)
+            );
         }
-        return userMapper.toUserDTO(
-                userRepository.save(entity)
+
+        entity.setId(profile.getId());
+        return profileMapper.toProfileDTO(
+                profileRepository.save(entity)
         );
     }
 

@@ -2,6 +2,7 @@ package com.socialnetwork.project.mapper;
 
 import com.socialnetwork.project.dto.ProfileDTO;
 import com.socialnetwork.project.dto.ProfileUpdateDTO;
+import com.socialnetwork.project.dto.UserUpdateDTO;
 import com.socialnetwork.project.entity.Profile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,6 +13,8 @@ public interface ProfileMapper {
 
     @Mapping(source = "userId", target = "user.id")
     Profile toEntity(ProfileUpdateDTO dto);
+    @Mapping(source = "userId", target = "user.id")
+    Profile toEntity(UserUpdateDTO dto);
 
     @Mappings({
         @Mapping(source = "user.id", target = "id"),

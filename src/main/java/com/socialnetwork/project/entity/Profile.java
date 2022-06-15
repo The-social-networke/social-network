@@ -27,6 +27,9 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "background")
+    private String background;
+
     @Column(name = "instagram")
     private String instagram;
 

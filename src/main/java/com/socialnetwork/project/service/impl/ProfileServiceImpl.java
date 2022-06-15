@@ -6,12 +6,14 @@ import com.socialnetwork.project.entity.Profile;
 import com.socialnetwork.project.mapper.ProfileMapper;
 import com.socialnetwork.project.repository.ProfileRepository;
 import com.socialnetwork.project.repository.UserRepository;
+import com.socialnetwork.project.service.ImageService;
 import com.socialnetwork.project.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -25,6 +27,8 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileMapper profileMapper;
 
     private final UserRepository userRepository;
+
+    private final ImageService imageService;
 
     @Override
     public ProfileDTO getById(Long userId) {
@@ -56,5 +60,20 @@ public class ProfileServiceImpl implements ProfileService {
         return profileMapper.toProfileDTO(
                 profileRepository.save(entity)
         );
+    }
+
+    @Override
+    public String saveBackground(MultipartFile file, Long profileId) {
+        return null;
+    }
+
+    @Override
+    public boolean updateBackground(MultipartFile file, Long profileId) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteBackground(Long profileId) {
+        return false;
     }
 }
