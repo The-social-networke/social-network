@@ -21,7 +21,7 @@ public class UserUpdateDTO {
     private Long userId;
 
     @NotBlank(message = "Name cannot be empty")
-    @Size(max = 64, message = "Name must be between 8 and 64")
+    @Size(max = 64, message = "Name must be up to 64")
     private String name;
 
     @NotBlank(message = "Surname cannot be empty")
