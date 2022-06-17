@@ -22,4 +22,8 @@ public interface UserService {
     User findByUsername(String username);
     User findByEmail(String email);
     User findByPhone(String phone);
+
+    String saveBackground(MultipartFile file, Long userId);
+    boolean updateBackground(MultipartFile file, Long userId);
+    boolean deleteBackground(Long userId);
 }

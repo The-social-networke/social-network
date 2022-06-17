@@ -142,6 +142,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String saveBackground(MultipartFile file, Long userId) {
+        User entity = userRepository.findById(userId).orElseThrow();
+        String background = imageService.saveBackground(file, userId);
+        entity.getProfile().setBackground(background);
+        userRepository.save(entity);
+        return background;
+    }
+
+    @Override
+    public boolean updateBackground(MultipartFile file, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return imageService.updateBackground(user.getProfile().getBackground(), file);
+    }
+
+    @Override
+    public boolean deleteBackground(Long userId) {
+        User entity = userRepository.findById(userId).orElseThrow();
+        if (imageService.deleteBackground(entity.getProfile().getBackground())) {
+            entity.getProfile().setBackground(null);
+            userRepository.save(entity);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public List<UserDTO> searchChats(String search, UserSecurity userSecurity) {
         List<User> users = userRepository.searchUsers(search.toLowerCase());
         if (userSecurity != null) {

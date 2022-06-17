@@ -14,6 +14,7 @@ import java.nio.file.Files;
 public class ImageServiceImpl implements ImageService {
 
     private final String avatarsFilepath;
+    private final String backgroundsFilepath;
     private final String messagesFilepath;
 
     public ImageServiceImpl() {
@@ -22,6 +23,12 @@ public class ImageServiceImpl implements ImageService {
             File avatarsDirectory = new File(avatarsFilepath);
             if (!avatarsDirectory.exists()) {
                 Files.createDirectories(avatarsDirectory.toPath());
+            }
+
+            backgroundsFilepath = ResourceUtils.getFile("classpath:").getPath() + "/static/files/backgrounds/";
+            File backgroundsDirectory = new File(backgroundsFilepath);
+            if (!backgroundsDirectory.exists()) {
+                Files.createDirectories(backgroundsDirectory.toPath());
             }
 
             messagesFilepath = ResourceUtils.getFile("classpath:").getPath() + "/static/files/messages/";
@@ -75,6 +82,49 @@ public class ImageServiceImpl implements ImageService {
         File avatar = new File(avatarsFilepath + filename);
         if (avatar.exists()) {
             return avatar.delete();
+        }
+        return false;
+    }
+
+    @Override
+    public String saveBackground(MultipartFile file, Long userId) {
+        try {
+            File background = new File(backgroundsFilepath + userId.toString() + file.getOriginalFilename());
+            if (!background.exists()) {
+                background.createNewFile();
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(background));
+            bos.write(file.getBytes());
+            bos.flush();
+            bos.close();
+            return userId.toString() + file.getOriginalFilename();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean updateBackground(String filename, MultipartFile file) {
+        try {
+            File background = new File(backgroundsFilepath + filename);
+            if (!background.exists()) {
+                background.createNewFile();
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(background));
+            bos.write(file.getBytes());
+            bos.flush();
+            bos.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteBackground(String filename) {
+        File background = new File(backgroundsFilepath + filename);
+        if (background.exists()) {
+            return background.delete();
         }
         return false;
     }

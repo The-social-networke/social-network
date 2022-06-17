@@ -28,6 +28,8 @@ public class ProfileDTO {
 
     private Sex sex;
 
+    private String background;
+
     private String instagram;
 
     private String telegram;

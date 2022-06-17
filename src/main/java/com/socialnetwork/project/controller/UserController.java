@@ -88,4 +88,27 @@ public class UserController {
         dto.setUserId(userSecurity.getId());
         return profileService.update(dto);
     }
+
+    @PostMapping("background")
+    public String setBackground(
+            @RequestParam("file") MultipartFile file,
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.saveBackground(file, userSecurity.getId());
+    }
+
+    @PutMapping("background")
+    public boolean updateBackground(
+            @RequestParam("file") MultipartFile file,
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.updateBackground(file, userSecurity.getId());
+    }
+
+    @DeleteMapping("background")
+    public boolean deleteBackground(
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.deleteBackground(userSecurity.getId());
+    }
 }

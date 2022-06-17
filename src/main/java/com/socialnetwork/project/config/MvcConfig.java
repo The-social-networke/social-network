@@ -15,6 +15,9 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/avatars/**")
                 .addResourceLocations("classpath:/static/files/avatars/");
+        registry
+                .addResourceHandler("/backgrounds/**")
+                .addResourceLocations("classpath:/static/files/backgrounds/");
     }
 
     @Override
