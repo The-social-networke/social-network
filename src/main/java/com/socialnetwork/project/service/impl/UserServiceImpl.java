@@ -70,8 +70,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ProfileDTO getProfileById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
         return profileMapper.toProfileDTO(
-            userRepository.findById(userId).orElseThrow().getProfile()
+            user.getProfile() != null ?
+                    user.getProfile()
+                    :
+                    new Profile().toBuilder().user(user).build()
         );
     }
 
