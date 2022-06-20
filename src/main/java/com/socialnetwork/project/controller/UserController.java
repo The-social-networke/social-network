@@ -41,6 +41,13 @@ public class UserController {
         return userService.getById(userSecurity.getId());
     }
 
+    @GetMapping({"{id}"})
+    public UserDTO getAnotherUser(
+            @PathVariable("id") Long userId
+    ) {
+        return userService.getById(userId);
+    }
+
     @PutMapping()
     public ProfileDTO update(
             @Valid @RequestBody UserUpdateDTO dto,
