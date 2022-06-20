@@ -11,6 +11,7 @@ public interface UserService {
 
     boolean create(UserCreateDTO dto);
     UserDTO getById(Long userId);
+    ProfileDTO getProfileById(Long userId);
     ProfileDTO update(UserUpdateDTO dto);
     boolean delete(Long userId);
 

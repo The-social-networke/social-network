@@ -69,10 +69,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ProfileDTO getProfileById(Long userId) {
+        return profileMapper.toProfileDTO(
+            userRepository.findById(userId).orElseThrow().getProfile()
+        );
+    }
+
+    @Override
     public ProfileDTO update(UserUpdateDTO dto) {
         User user = userRepository.findById(dto.getUserId()).orElseThrow();
 
-        if (!user.getUsername().equals(dto.getUsername()) && findByEmail(dto.getEmail()) != null) {
+        if (!user.getUsername().equals(dto.getUsername()) && findByUsername(dto.getUsername()) != null) {
             throw new BadCredentialsException("Username is already exists");
         }
         if (!user.getEmail().equals(dto.getEmail()) && findByEmail(dto.getEmail()) != null) {

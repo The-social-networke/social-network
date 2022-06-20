@@ -42,10 +42,10 @@ public class UserController {
     }
 
     @GetMapping({"{id}"})
-    public UserDTO getAnotherUser(
+    public ProfileDTO getAnotherUser(
             @PathVariable("id") Long userId
     ) {
-        return userService.getById(userId);
+        return userService.getProfileById(userId);
     }
 
     @PutMapping()

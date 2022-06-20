@@ -30,11 +30,11 @@ public class AuthorizationController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/registration")
-    public ResponseEntity registration(
+    public String registration(
             @Valid @RequestBody UserCreateDTO dto
     ) {
         userService.create(dto);
-        return ResponseEntity.ok().build();
+        return "{}";
     }
 
     @PostMapping("/login")
